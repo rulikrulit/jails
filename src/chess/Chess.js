@@ -1,0 +1,118 @@
+import React, { Component } from 'react';
+import './Chess.css';
+import Chat from '../Chat.js';
+import FIGURES from './figures'
+class Chess extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: 'Russ',
+      board: [],
+      selectedCell: undefined
+    };
+  }
+
+  setBoard() {
+    let self = this;
+    var Chess = this.jail.loadModel('CHESS');
+    Chess.on('create', function(chess) {
+      setBoard(chess);
+    });
+    Chess.on('getModel', function(chess) {
+      console.log('checss', chess, self.jail);
+      if (chess.id === 1) { // Chess id hardcoded
+        setBoard(chess);
+      } else {
+        Chess.methods.create();
+      }
+    });
+    function setBoard(chess) {
+      self.chess = chess;
+      console.log('chess', chess);
+      if (!chess.properties.board) { // new board, need to reset for primary rendering
+        chess.methods.reset();
+      } else {
+        self.setState({board: chess.properties.board});
+      }
+      chess.on('move', function(params) {
+        self.setState({board: chess.properties.board});
+      });
+      chess.on('reset', function(params) {
+        self.setState({board: chess.properties.board});
+      });
+
+    }
+
+    Chess.methods.getModel({id: 1}); // chat id hardcoded
+  }
+
+  componentDidMount() {
+    let self = this;
+    this.jail = window.Jails({
+      debug: true
+    });
+    this.jail.on('getIndex', function() {
+      self.setBoard();
+    });
+    this.jail.getIndex();
+  }
+
+  myPosition(i, j) {
+    if (this.state.selectedCell) {
+      this.chess.methods.move({
+        from: this.state.selectedCell,
+        to: [i, j],
+        user: this.state.user
+      })
+      this.setState({
+        selectedCell: undefined
+      });
+    } else {
+      this.setState({
+        selectedCell: [i, j]
+      });
+    }
+  }
+
+  getClass(i, j) {
+    if (this.state.selectedCell && this.state.selectedCell[0] === i && this.state.selectedCell[1] === j) {
+      return 'cell selected';
+    } else {
+      return 'cell';
+    }
+  }
+
+  render() {
+    let self = this;
+    function renderRow(row, i) {
+      return row.map((cell, j) => (
+        <td onClick={(e) => self.myPosition(i, j)} key={'' + i + j} className={self.getClass(i, j)}>{cell ? FIGURES[cell.color][cell.figure]() : ''}</td>
+      ));
+    }
+    console.log('state', this.state);
+    const board = this.state.board.map((row, i) => (
+      <tr key={i} className="row">{renderRow(row, i)}</tr>
+    ));
+    return (
+      <div className="chess">
+        <div className="grid grid_float container clearfix">
+          <div className="col removed" id="removed">
+          </div>
+          <div className="board col">
+            <table className="chess-board">
+              <tbody>
+                {board}
+              </tbody>
+            </table>
+          </div>
+          <div className="col">
+            <Chat jail={this.jail}></Chat>
+            <div id="history"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Chess;

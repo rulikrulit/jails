@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+.grid_float .col {
+  float: left;
+}
+.col {
+  margin-right: 2%;
+}
+.col:last-child {
+  margin-right: 0;
+}
+
+.clearfix:before, .clearfix:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+.board {
+  border: 10px solid #456;
+  position: relative;
+  width: 558px;
+  height: 558px;
+  background-color: #cca;
+}
+.chat {
+  width: 400px;
+}
+.cell {
+  position: relative;
+  width: 65px;
+  height: 65px;
+  border: 1px solid #444;
+}
+.cell.selected {
+  background-color: #eee;
+}
+.cell svg {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+}
+.row:nth-child(2n) .cell:nth-child(2n), .row:nth-child(2n+1) .cell:nth-child(2n+1) {
+  background-color: #444;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n).selected, .row:nth-child(2n+1) .cell:nth-child(2n+1).selected {
+  background-color: #aaa;
+}
+.move {
+  display: inline-block;
+  margin-right: 5px;
+}
+.removed {
+  width: 100px;
+  min-height: 500px;
+  font-size: 0;
+}
+.removed__item {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
+.removed__item svg {
+  position: absolute;
+}
+@keyframes flush {
+    0% {opacity: 1;}
+    50% {opacity: .3;}
+    100% {opacity: 1;}
+}

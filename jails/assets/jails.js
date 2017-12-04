@@ -306,6 +306,10 @@
 
         log({serverData: serverData});
 
+        if (!model) {
+          return false; // This can come for other instance of Jail and model can be undefined
+        }
+
         model.protectedMethods[modelMethod](modelData, serverData);
 
         events.forEach(function(event) {

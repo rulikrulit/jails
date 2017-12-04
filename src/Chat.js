@@ -60,7 +60,7 @@ class Chat extends Component {
 
   componentDidMount() {
     let self = this;
-    this.jail = window.Jails({
+    this.jail = this.props.jail || window.Jails({
       debug: true
     });
     this.jail.on('getIndex', function() {
