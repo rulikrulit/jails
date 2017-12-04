@@ -8,6 +8,7 @@ class Chess extends Component {
     this.state = {
       user: 'Russ',
       board: [],
+      history: [],
       selectedCell: undefined
     };
   }
@@ -32,15 +33,23 @@ class Chess extends Component {
       if (!chess.properties.board) { // new board, need to reset for primary rendering
         chess.methods.reset();
       } else {
-        self.setState({board: chess.properties.board});
+        self.setState({
+          board: chess.properties.board,
+          history: chess.properties.history
+        });
       }
       chess.on('move', function(params) {
-        self.setState({board: chess.properties.board});
+        self.setState({
+          board: chess.properties.board,
+          history: chess.properties.history
+        });
       });
       chess.on('reset', function(params) {
-        self.setState({board: chess.properties.board});
+        self.setState({
+          board: chess.properties.board,
+          history: chess.properties.history
+        });
       });
-
     }
 
     Chess.methods.getModel({id: 1}); // chat id hardcoded
@@ -96,6 +105,9 @@ class Chess extends Component {
     const board = this.state.board.map((row, i) => (
       <tr key={i} className="row">{renderRow(row, i)}</tr>
     ));
+    const history = this.state.history.map((item, i) => (
+      <div key={i} className="item">{item}</div>
+    ));
     return (
       <div className="chess">
         <button type="button" class="btn" onClick={this.resetChess.bind(this)}>Reset</button>
@@ -111,7 +123,7 @@ class Chess extends Component {
           </div>
           <div className="col">
             <Chat jail={this.jail}></Chat>
-            <div id="history"></div>
+            <div id="history">{history}</div>
           </div>
         </div>
       </div>
