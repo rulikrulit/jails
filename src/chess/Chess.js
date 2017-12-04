@@ -82,6 +82,10 @@ class Chess extends Component {
     }
   }
 
+  resetChess() {
+    this.chess.methods.reset();
+  }
+
   render() {
     let self = this;
     function renderRow(row, i) {
@@ -89,12 +93,12 @@ class Chess extends Component {
         <td onClick={(e) => self.myPosition(i, j)} key={'' + i + j} className={self.getClass(i, j)}>{cell ? FIGURES[cell.color][cell.figure]() : ''}</td>
       ));
     }
-    console.log('state', this.state);
     const board = this.state.board.map((row, i) => (
       <tr key={i} className="row">{renderRow(row, i)}</tr>
     ));
     return (
       <div className="chess">
+        <button type="button" class="btn" onClick={this.resetChess.bind(this)}>Reset</button>
         <div className="grid grid_float container clearfix">
           <div className="col removed" id="removed">
           </div>
