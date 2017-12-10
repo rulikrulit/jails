@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import JailsCreator from './scripts/JailsCreator.js';
 
 class Chat extends Component {
   constructor(props) {
@@ -60,15 +61,11 @@ class Chat extends Component {
 
   componentDidMount() {
     let self = this;
-    this.jail = this.props.jail || window.Jails({
-      debug: true
-    });
-    this.jail.on('getIndex', function() {
-      console.log('received index');
+    let jailsCreator = new JailsCreator();
+    this.jail = jailsCreator.jail;
+    jailsCreator.indexPromise.then(() => {
       self.setChat();
     });
-    console.log('getting index');
-    this.jail.getIndex();
   }
 
   render() {
