@@ -38,7 +38,7 @@ class Chat extends Component {
     });
     Chat.on('getModel', function(chat) {
       console.log('getting chat', chat);
-      if (chat.id === 1) { // chat id hardcoded
+      if (chat.id === 0) { // chat id hardcoded
         setChat(chat);
       } else {
         Chat.methods.create({
@@ -56,7 +56,7 @@ class Chat extends Component {
 
     }
 
-    Chat.methods.getModel({id: 1}); // chat id hardcoded
+    Chat.methods.getModel({id: 0}); // chat id hardcoded
   }
 
   componentDidMount() {

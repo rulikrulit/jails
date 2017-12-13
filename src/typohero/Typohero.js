@@ -98,7 +98,7 @@ class Typohero extends Component {
     });
     Typohero.on('getModel', function(hero) {
       console.log('getting hero', hero);
-      if (hero.id === 1) { // hero id hardcoded
+      if (hero.id === 0) { // hero id hardcoded
         loadHero(hero);
       } else {
         Typohero.methods.create({
@@ -120,7 +120,7 @@ class Typohero extends Component {
       });
     }
 
-    Typohero.methods.getModel({id: 1}); // chat id hardcoded
+    Typohero.methods.getModel({id: 0}); // chat id hardcoded
   }
 
   componentDidMount() {

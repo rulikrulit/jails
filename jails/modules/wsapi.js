@@ -45,7 +45,8 @@ module.exports = function(app) {
             JAILS.index[modelName].push(id);
 
             JAILS.modelInstances[modelName + id] = {
-              id: id
+              id: id,
+              instanceOf: modelName
             };
 
             JAILS.modelInstances[modelName + id].methods = JAILS.models[modelName].instanceMethods(JAILS.modelInstances[modelName + id]);
@@ -105,6 +106,11 @@ module.exports = function(app) {
     next();
   }, function() {
     console.log('model registration complete');
+    // Use syncToDb first to reset all the data to default on each start
+    // Start the process after all models are loaded to be able to read their methods
+    // cleanDb(); // use to clean mess in DB
+    syncFromDb();
+    setInterval(syncToDb, 2000);
   });
 
   var setConnectionName = function(conn) {
@@ -118,87 +124,109 @@ module.exports = function(app) {
 
     console.log('setting models to synch', JSON.stringify(models));
     models.forEach(function(model) {
-
+      console.log('mod from arr', model);
       MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
         if (err) {
           throw err;
         }
-        console.log('mod data', JAILS.modelInstances[model].properties);
-        db.collection('models').update({name: model}, {
-          $set: {
-            data: JAILS.modelInstances[model].properties
-          }
+        db.collection('models').find().toArray(function(err, result) {
+          console.log('all models', result);
         });
+        console.log('mod data', JAILS.modelInstances[model].properties);
+        db.collection('models').findAndModify(
+          {name: model}, // query
+          [['_id','asc']], // sort
+          { // update
+            $set: {
+              properties: JAILS.modelInstances[model].properties,
+              id: JAILS.modelInstances[model].id,
+              instanceOf: JAILS.modelInstances[model].instanceOf
+            }
+          },
+          {upsert: true} // options (update if exists, write if does not)
+        );
+        db.close();
       });
 
     });
   };
-
+  var cleanDb = function() {
+    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+      db.collection('models').remove();
+      db.close();
+    });
+  }
   var syncFromDb = function() {
     var models = Object.keys(JAILS.modelInstances);
-    models.forEach(function(model) {
-      MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
-        db.collection('models').find({name: model}).toArray(function(err, result) {
-          console.log('syncFromDb', result);
-          if (result.length === 0) {
-            db.collection('models').insert({
-              name: model,
-              data: JAILS.modelInstances[model].properties
-            });
-          }
-          JAILS.models[model].properties = result[0].properties;
-          console.log('updating model object', model, JSON.stringify(result));
-          db.close();
-        });   
-      });
-    });
-  };
-
-  // Is not supported. May require update
-  var createMissingDocuments = function() {
-    var models = Object.keys(JAILS.models),
-      promises = [],
-      THIS;
-    models.forEach(function(model, i) {
-      MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
-        db.collection('models').find({name: model}).toArray(function(err, result) {
-          if (err) {
-            throw err;
-          }
-          if (result.length === 0) {
-            db.collection('models').insert({
-              name: model,
-              data: JAILS.models[model].data
-            });
-          }
-          console.log(model, result);
-          db.close();
-        });   
-      });
-
-      // if (i === models.length - 1) {
-      //   THIS.promise
-      // }
-    });
-  };
-
-  // Is not supported. May require update
-  var cleanDocuments = function() {
-    var models = Object.keys(JAILS.models);
-
-    models.forEach(function(model) {
-      MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
-        db.collection('models').remove({name: model});
+    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+      db.collection('models').find().toArray(function(err, result) {
+        console.log('all models', result);
+        result.forEach(function(model) {
+          console.log('MODL', model);
+          JAILS.modelInstances[model.name] = model;
+          JAILS.modelInstances[model.name].methods = JAILS.models[model.instanceOf].instanceMethods(model); // load instanceMethods from prototype
+        });
         db.close();
       });
     });
-
+    // models.forEach(function(model) {
+    //   MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    //     db.collection('models').find({name: model}).toArray(function(err, result) {
+    //       console.log('syncFromDb', result);
+    //       if (result.length === 0) {
+    //         db.collection('models').insert({
+    //           name: model,
+    //           data: JAILS.modelInstances[model].properties
+    //         });
+    //       }
+    //       JAILS.models[model].properties = result[0].properties;
+    //       console.log('updating model object', model, JSON.stringify(result));
+    //       db.close();
+    //     });   
+    //   });
+    // });
   };
 
+  // Is not supported. May require update
+  // var createMissingDocuments = function() {
+  //   var models = Object.keys(JAILS.modelInstances),
+  //     promises = [],
+  //     THIS;
+  //   models.forEach(function(model, i) {
+  //     MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+  //       db.collection('models').find({name: model}).toArray(function(err, result) {
+  //         if (err) {
+  //           throw err;
+  //         }
+  //         if (result.length === 0) {
+  //           db.collection('models').insert({
+  //             name: model,
+  //             data: JAILS.modelInstances[model].data
+  //           });
+  //         }
+  //         console.log(model, result);
+  //         db.close();
+  //       });   
+  //     });
 
-  // Use syncToDb first to reset all the data to default on each start
-  // syncFromDb();
-  // setInterval(syncToDb, 2000);
+  //     // if (i === models.length - 1) {
+  //     //   THIS.promise
+  //     // }
+  //   });
+  // };
+
+  // Is not supported. May require update
+  // var cleanDocuments = function() {
+  //   var models = Object.keys(JAILS.models);
+
+  //   models.forEach(function(model) {
+  //     MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+  //       db.collection('models').remove({name: model});
+  //       db.close();
+  //     });
+  //   });
+
+  // };
 
   var METHODS = {
     broadcast: function(params) {

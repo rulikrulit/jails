@@ -25,7 +25,7 @@ class Chess extends Component {
     });
     Chess.on('getModel', function(chess) {
       console.log('checss', chess, self.jail);
-      if (chess.id === 1) { // Chess id hardcoded
+      if (chess.id === 0) { // Chess id hardcoded
         setBoard(chess);
       } else {
         Chess.methods.create();
@@ -53,7 +53,7 @@ class Chess extends Component {
       });
     }
 
-    Chess.methods.getModel({id: 1}); // chat id hardcoded
+    Chess.methods.getModel({id: 0}); // chat id hardcoded
   }
 
   componentDidMount() {
