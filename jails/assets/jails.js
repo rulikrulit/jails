@@ -212,7 +212,7 @@
 
       // Exit if model already exists
       if (JAILS.models[modelName]) {
-        console.warn('Model ' + model + ' already exists! Make sure you use unique names for models');
+        console.warn('Model ' + modelName + ' already exists! Make sure you use unique names for models');
         return;
       }
 

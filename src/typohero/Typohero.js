@@ -3,12 +3,16 @@ import JailsCreator from '../scripts/JailsCreator.js';
 import './Typohero.css';
 import Chat from '../Chat.js';
 import Artur from './heros/Artur.js';
+import Robot from './heros/Robot.js';
+
+let TypoheroModel;
 
 class Typohero extends Component {
   constructor(props) {
     super(props);
     this.state = {
       hero: {},
+      bot: {},
       currentSpell: ''
     };
   }
@@ -26,23 +30,22 @@ class Typohero extends Component {
   }
 
   renderColumns(nRows, nCols, currentRow) {
-    let self = this;
+    let self = this,
+      cellModel;
     return Array.apply(null, {length: nCols}).map(function(a, currentCol) {
       let className = 'board__cell';
 
       if (currentCol === 5 && currentRow === 8) {
         className += ' marked';
-        console.log('!!!!');
       }
       if (self.hero && (currentCol === self.hero.properties.position[1]) && (9 - currentRow) === self.hero.properties.position[0]) {
-        if (className === 'board__cell marked') {
-        }
-        return (
-          <td className={className} key={currentCol}>{Artur()}</td>
-        );
+        cellModel = Artur();
+      }
+      if (self.robot && (currentCol === self.robot.properties.position[1]) && (9 - currentRow) === self.robot.properties.position[0]) {
+        cellModel = Robot();
       }
       return (
-        <td className={className} key={currentCol}></td>
+        <td className={className} key={currentCol}>{cellModel || ''}</td>
       );
     });
   }
@@ -57,7 +60,7 @@ class Typohero extends Component {
     });
   }
 
-  board() {
+  boardHtml() {
     const height = 10;
     const width = 25;
 
@@ -69,7 +72,7 @@ class Typohero extends Component {
   render() {
     let self = this;
 
-    const board = self.board();
+    const board = self.boardHtml();
     return (
       <div className="Typohero">
         <table className="typohero-board">
@@ -80,7 +83,7 @@ class Typohero extends Component {
         <form className="spellCaster" id="spellCaster" onSubmit={this.castSpell.bind(this)}>
           <label>
             Spell:&nbsp;
-            <input autofocus="true" type="text" value={this.state.currentSpell} onChange={this.updateSpell.bind(this)} />
+            <input autoFocus="true" type="text" value={this.state.currentSpell} onChange={this.updateSpell.bind(this)} />
           </label>
           <input type="submit" value="Submit" />
         </form>
@@ -89,38 +92,93 @@ class Typohero extends Component {
   }
 
 
-  loadHero() {
+  loadHero(options) {
+    console.log('loading hero', options);
     let self = this;
-    let Typohero = this.jail.loadModel('TYPOHERO');
-    Typohero.on('create', function(hero) {
+    TypoheroModel = TypoheroModel || this.jail.loadModel('TYPOHERO');
+    console.log('TypoheroModel', TypoheroModel);
+    TypoheroModel.on('create', function(hero) {
       console.log('hero create');
       loadHero(hero);
     });
-    Typohero.on('getModel', function(hero) {
+    TypoheroModel.on('getModel', function(hero) {
       console.log('getting hero', hero);
-      if (hero.id === 0) { // hero id hardcoded
+      if (hero.id === options.id) { // hero id hardcoded
         loadHero(hero);
       } else {
-        Typohero.methods.create({
+        TypoheroModel.methods.create({
           position: [9, 24]
         });
       }
     });
     function loadHero(hero) {
-      self.hero = hero;
+      self[options.type] = hero;
       self.setState({hero: hero.properties});
       hero.on('move', function(params, resp) {
         if (params.direction === 'jump') {
-          let hero = self.state.hero;
+          let hero = self.state[options.type];
           hero.position = resp;
-          self.setState({hero: hero});
+          self.setState({[options.type]: hero});
         } else {
-          self.setState({hero: hero.properties});
+          self.setState({[options.type]: hero.properties});
         }
       });
     }
 
-    Typohero.methods.getModel({id: 0}); // chat id hardcoded
+    TypoheroModel.methods.getModel({id: options.id}); // chat id hardcoded
+  }
+
+  loadBoard() {
+    let self = this;
+    let Typoheroboard = this.jail.loadModel('TYPOHEROBOARD');
+    Typoheroboard.on('create', function(board) {
+      console.log('board create');
+      board.on('setDependencies', function(board) {
+        loadBoard(board);
+      });
+      board.methods.setDependencies({
+        botId: 0,
+        heroId: 1
+      });
+    });
+    Typoheroboard.on('getModel', function(board) {
+      console.log('getting board', board);
+      board.on('setDependencies', function(board) {
+        loadBoard(board);
+      });
+      if (board.id === 1) { // board id hardcoded
+        board.methods.setDependencies({
+          botId: 0,
+          heroId: 1
+        });
+      } else {
+        Typoheroboard.methods.create();
+      }
+    });
+    function loadBoard(board) {
+      console.log('BOARD', board);
+      self.board = board;
+      self.setState({board: board.properties});
+      self.loadHero({
+        type: 'hero',
+        id: board.heroId
+      });
+      self.loadHero({
+        type: 'robot',
+        id: board.botId
+      });
+      // board.on('assignDependencies', function(params, resp) {
+      //   if (params.direction === 'jump') {
+      //     let board = self.state.board;
+      //     board.position = resp;
+      //     self.setState({board: board});
+      //   } else {
+      //     self.setState({board: board.properties});
+      //   }
+      // });
+    }
+
+    Typoheroboard.methods.getModel({id: 1}); // chat id hardcoded
   }
 
   componentDidMount() {
@@ -128,7 +186,7 @@ class Typohero extends Component {
     let jailsCreator = new JailsCreator();
     this.jail = jailsCreator.jail;
     jailsCreator.indexPromise.then(() => {
-      self.loadHero();
+      self.loadBoard();
     });
   }
 }

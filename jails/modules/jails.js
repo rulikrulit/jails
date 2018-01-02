@@ -1,7 +1,9 @@
+'use strict';
+
 // requires:
 // authorization module
 var fs = require('fs');
-
+var getBots = require('./jails-bots.js');
 module.exports = function(app) {
 
   var MongoClient = require('mongodb').MongoClient;
@@ -10,6 +12,11 @@ module.exports = function(app) {
   var cookieParser = require('cookie-parser');
 
   var broadcast = function (server, msg) {
+    getBots.then(function(bots) {
+      bots.forEach(function(bot) {
+        bot.get(msg);
+      });
+    });
     server.connections.forEach(function (conn) {
         conn.sendText(msg);
     });
@@ -364,8 +371,16 @@ module.exports = function(app) {
 
   });
 
-  return {
-    server: server,
-    broadcast: broadcast
-  }
+  JAILS.server = server;
+  JAILS.broadcast = broadcast;
+
+  getBots.then(function(bots) {
+    JAILS.bots = bots;
+    bots.forEach(function(bot) {
+      bot.init(JAILS);
+    });
+  });
+
+
+  return JAILS;
 };

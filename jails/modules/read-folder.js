@@ -2,6 +2,7 @@ var fs = require('fs');
 
 module.exports = function(app) {
     return function(folder, processFile, callback) {
+        callback = callback || function() {};
         var files = fs.readdirSync(folder).sort();
         function readFile(n) {
             if (n === files.length) {
