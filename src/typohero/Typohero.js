@@ -30,18 +30,18 @@ class Typohero extends Component {
   }
 
   renderColumns(nRows, nCols, currentRow) {
-    let self = this,
-      cellModel;
+    let self = this;
     return Array.apply(null, {length: nCols}).map(function(a, currentCol) {
-      let className = 'board__cell';
+      let className = 'board__cell',
+        cellModel;
 
       if (currentCol === 5 && currentRow === 8) {
         className += ' marked';
       }
-      if (self.hero && (currentCol === self.hero.properties.position[1]) && (9 - currentRow) === self.hero.properties.position[0]) {
+      if (self.state.hero.position && (currentCol === self.state.hero.position[1]) && (9 - currentRow) === self.state.hero.position[0]) {
         cellModel = Artur();
       }
-      if (self.robot && (currentCol === self.robot.properties.position[1]) && (9 - currentRow) === self.robot.properties.position[0]) {
+      if (self.state.bot.position && (currentCol === self.state.bot.position[1]) && (9 - currentRow) === self.state.bot.position[0]) {
         cellModel = Robot();
       }
       return (
@@ -72,6 +72,8 @@ class Typohero extends Component {
   render() {
     let self = this;
 
+    console.log('state', self.state);
+
     const board = self.boardHtml();
     return (
       <div className="Typohero">
@@ -96,16 +98,14 @@ class Typohero extends Component {
     console.log('loading hero', options);
     let self = this;
     TypoheroModel = TypoheroModel || this.jail.loadModel('TYPOHERO');
-    console.log('TypoheroModel', TypoheroModel);
     TypoheroModel.on('create', function(hero) {
-      console.log('hero create');
       loadHero(hero);
     });
     TypoheroModel.on('getModel', function(hero) {
-      console.log('getting hero', hero);
       if (hero.id === options.id) { // hero id hardcoded
         loadHero(hero);
-      } else {
+      }
+      if (hero.id === undefined) {
         TypoheroModel.methods.create({
           position: [9, 24]
         });
@@ -113,7 +113,9 @@ class Typohero extends Component {
     });
     function loadHero(hero) {
       self[options.type] = hero;
-      self.setState({hero: hero.properties});
+      let newState = self.state;
+      newState[options.type] = hero.properties;
+      self.setState(newState);
       hero.on('move', function(params, resp) {
         if (params.direction === 'jump') {
           let hero = self.state[options.type];
@@ -132,7 +134,6 @@ class Typohero extends Component {
     let self = this;
     let Typoheroboard = this.jail.loadModel('TYPOHEROBOARD');
     Typoheroboard.on('create', function(board) {
-      console.log('board create');
       board.on('setDependencies', function(board) {
         loadBoard(board);
       });
@@ -142,11 +143,10 @@ class Typohero extends Component {
       });
     });
     Typoheroboard.on('getModel', function(board) {
-      console.log('getting board', board);
       board.on('setDependencies', function(board) {
         loadBoard(board);
       });
-      if (board.id === 1) { // board id hardcoded
+      if (board.id === 0) { // board id hardcoded
         board.methods.setDependencies({
           botId: 0,
           heroId: 1
@@ -164,7 +164,7 @@ class Typohero extends Component {
         id: board.heroId
       });
       self.loadHero({
-        type: 'robot',
+        type: 'bot',
         id: board.botId
       });
       // board.on('assignDependencies', function(params, resp) {
@@ -178,7 +178,7 @@ class Typohero extends Component {
       // });
     }
 
-    Typoheroboard.methods.getModel({id: 1}); // chat id hardcoded
+    Typoheroboard.methods.getModel({id: 0}); // chat id hardcoded
   }
 
   componentDidMount() {

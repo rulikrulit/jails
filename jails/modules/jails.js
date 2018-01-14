@@ -373,6 +373,7 @@ module.exports = function(app) {
 
   JAILS.server = server;
   JAILS.broadcast = broadcast;
+  JAILS.methods = METHODS;
 
   getBots.then(function(bots) {
     JAILS.bots = bots;

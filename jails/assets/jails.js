@@ -149,6 +149,7 @@
               // console.log('after cyc', JAILS.modelInstances[modelName + id].properties);
               // registering events
               JAILS.modelInstances[modelName + id].on = function(event, callback) {
+                console.log('registering event', modelName + id);
                 JAILS.events[modelName + id] = JAILS.events[modelName + id] || [];
 
                 JAILS.events[modelName + id].push({
