@@ -7,6 +7,7 @@
 *
 */
 'use strict';
+const boardSize = [10, 25];
 module.exports = {
   methods: {},
   properties: {},
@@ -37,6 +38,18 @@ module.exports = {
             self.properties.position[0] += getRandomInt(-2, 2);
             self.properties.position[1] += getRandomInt(-2, 2);
             response = self.properties.position;
+        }
+        if (self.properties.position[0] > (boardSize[0] - 1)) {
+          self.properties.position[0] = boardSize[0] - 1;
+        }
+        if (self.properties.position[0] < 0) {
+          self.properties.position[0] = 0;
+        }
+        if (self.properties.position[1] > (boardSize[1] - 1)) {
+          self.properties.position[1] = boardSize[1] - 1;
+        }
+        if (self.properties.position[1] < 0) {
+          self.properties.position[1] = 0;
         }
         return response;
       }

@@ -19,6 +19,9 @@ module.exports = {
       setDependencies: function(params) {
         self.properties.botId = params.botId;
         self.properties.heroId = params.heroId;
+      },
+      endGame() {
+        return true;
       }
     };
   }

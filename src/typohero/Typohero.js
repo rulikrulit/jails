@@ -13,7 +13,8 @@ class Typohero extends Component {
     this.state = {
       hero: {},
       bot: {},
-      currentSpell: ''
+      currentSpell: '',
+      gameFinished: false
     };
   }
 
@@ -69,14 +70,24 @@ class Typohero extends Component {
     return self.renderRows(height, width);
   }
 
+  gameFinishedModalHtml() {
+    return(
+      <h1>You won!</h1>
+    )
+  }
+
   render() {
     let self = this;
 
     console.log('state', self.state);
-
     const board = self.boardHtml();
+    let gameFinishedModal = null;
+    if (self.state.gameFinished) {
+      gameFinishedModal = self.gameFinishedModalHtml();
+    }
     return (
       <div className="Typohero">
+        {gameFinishedModal}
         <table className="typohero-board">
           <tbody>
             {board}
@@ -137,6 +148,9 @@ class Typohero extends Component {
       board.on('setDependencies', function(board) {
         loadBoard(board);
       });
+      board.on('endGame', function() {
+        self.setState({gameFinished: true});
+      });
       board.methods.setDependencies({
         botId: 0,
         heroId: 1
@@ -145,6 +159,9 @@ class Typohero extends Component {
     Typoheroboard.on('getModel', function(board) {
       board.on('setDependencies', function(board) {
         loadBoard(board);
+      });
+      board.on('endGame', function() {
+        self.setState({gameFinished: true});
       });
       if (board.id === 0) { // board id hardcoded
         board.methods.setDependencies({

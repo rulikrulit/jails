@@ -11,6 +11,13 @@ module.exports = function(app) {
   var ws = require('nodejs-websocket');
   var cookieParser = require('cookie-parser');
 
+  // getBots.then(function(bots) {
+  //   bots.forEach(function(bot) {
+  //     console.log('testing bot', bot.name);
+  //     bot.get(bot.name, ' is working properly');
+  //   });
+  // });
+
   var broadcast = function (server, msg) {
     getBots.then(function(bots) {
       bots.forEach(function(bot) {
@@ -137,7 +144,7 @@ module.exports = function(app) {
           throw err;
         }
         db.collection('models').find().toArray(function(err, result) {
-          console.log('all models', result);
+          // console.log('all models', result);
         });
         console.log('mod data', JAILS.modelInstances[model].properties);
         db.collection('models').findAndModify(
