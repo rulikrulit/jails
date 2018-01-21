@@ -6,17 +6,43 @@ module.exports = {
   init: function(jails) {
     console.log('BOT INITED!', jails);
     JAILS = jails;
+    function moveBot(model, interval) {
+      interval = interval || 2000;
+      setInterval(() => {
+        console.log('BOT MOVES!');
+        const actions = ['left', 'bottom', 'right', 'top', 'jump'];
+        let randomAction = actions[Math.floor(Math.random() * actions.length)];
+        jails.methods.updateModel({
+          server: jails.server,
+          conn: 'bot',
+          data: {"model":model,"method":"move","data":{"direction":randomAction}}
+        });
+      }, interval);
+    }
+
+    function updateBullet(model, interval) {
+      interval = interval || 2000;
+      let modelInstance = JAILS.modelInstances[model];
+      if (modelInstance) {
+      }
+    }
     setInterval(() => {
-      console.log('BOT MOVES!');
-      const actions = ['left', 'bottom', 'right', 'top', 'jump'];
-      let randomAction = actions[Math.floor(Math.random() * actions.length)];
-      jails.methods.updateModel({
-        server: jails.server,
-        conn: 'bot',
-        data: {"model":"TYPOHERO0","method":"move","data":{"direction":randomAction}}
-      });
-      // jails.broadcast(jails.server, '{"method":"updateModel", "data":{"model":"TYPOHERO0","method":"move","data":{"direction":"' + randomAction + '"}}, "serverData":false}');
-    }, 8000);
+      // modelInstance.properties.bullets.forEach(function(bullet, index) {
+        jails.methods.updateModel({
+          server: jails.server,
+          conn: 'bot',
+          data: {'model':'TYPOHERO1','method':'moveBullet','data':{'index':0}}
+        });
+        jails.methods.updateModel({
+          server: jails.server,
+          conn: 'bot',
+          data: {'model':'TYPOHERO0','method':'moveBullet','data':{'index':0}}
+        });
+      // });
+    }, 2000);
+
+    moveBot('TYPOHERO0', 8000);
+    // updateBullet('TYPOHERO0', 2000);
   },
   get: function(msg) {
     console.log('bot recieved', msg);
@@ -34,7 +60,7 @@ module.exports = {
       jails.methods.updateModel({
         server: jails.server,
         conn: 'bot',
-        data: {"model":"TYPOHERO0","method":"move","data":{"direction":"left"}}
+        data: {'model':'TYPOHERO0','method':'move','data':{'direction':'left'}}
       });
     }
   }

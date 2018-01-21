@@ -4,6 +4,7 @@ import './Typohero.css';
 import Chat from '../Chat.js';
 import Artur from './heros/Artur.js';
 import Robot from './heros/Robot.js';
+import Bullet from './heros/Bullet.js';
 
 let TypoheroModel;
 
@@ -36,14 +37,26 @@ class Typohero extends Component {
       let className = 'board__cell',
         cellModel;
 
+      function isInCell(position) {
+        if (position && (currentCol === position[1]) && (9 - currentRow) === position[0]) {
+          return true;
+        }
+      }
+
       if (currentCol === 5 && currentRow === 8) {
         className += ' marked';
       }
-      if (self.state.hero.position && (currentCol === self.state.hero.position[1]) && (9 - currentRow) === self.state.hero.position[0]) {
+      if (isInCell(self.state.hero.position)) {
         cellModel = Artur();
       }
-      if (self.state.bot.position && (currentCol === self.state.bot.position[1]) && (9 - currentRow) === self.state.bot.position[0]) {
+      if (isInCell(self.state.bot.position)) {
         cellModel = Robot();
+      }
+      if (self.state.bot && self.state.bot.bullets && self.state.bot.bullets.length && isInCell(self.state.bot.bullets[0].position)) {
+        cellModel = Bullet();
+      }
+      if (self.state.hero && self.state.hero.bullets && self.state.hero.bullets.length && isInCell(self.state.hero.bullets[0].position)) {
+        cellModel = Bullet();
       }
       return (
         <td className={className} key={currentCol}>{cellModel || ''}</td>
@@ -135,6 +148,9 @@ class Typohero extends Component {
         } else {
           self.setState({[options.type]: hero.properties});
         }
+      });
+      hero.on('moveBullet', function(params, resp) {
+        self.setState({[options.type]: hero.properties});
       });
     }
 

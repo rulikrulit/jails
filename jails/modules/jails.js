@@ -4,6 +4,9 @@
 // authorization module
 var fs = require('fs');
 var getBots = require('./jails-bots.js');
+
+const synchInterval = 10000;
+
 module.exports = function(app) {
 
   var MongoClient = require('mongodb').MongoClient;
@@ -124,7 +127,7 @@ module.exports = function(app) {
     // Start the process after all models are loaded to be able to read their methods
     // cleanDb(); // use to clean mess in DB
     syncFromDb();
-    setInterval(syncToDb, 2000);
+    setInterval(syncToDb, synchInterval);
   });
 
   var setConnectionName = function(conn) {
@@ -138,7 +141,6 @@ module.exports = function(app) {
 
     console.log('setting models to synch', JSON.stringify(models));
     models.forEach(function(model) {
-      console.log('mod from arr', model);
       MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
         if (err) {
           throw err;
@@ -146,7 +148,6 @@ module.exports = function(app) {
         db.collection('models').find().toArray(function(err, result) {
           // console.log('all models', result);
         });
-        console.log('mod data', JAILS.modelInstances[model].properties);
         db.collection('models').findAndModify(
           {name: model}, // query
           [['_id','asc']], // sort
@@ -174,9 +175,7 @@ module.exports = function(app) {
     var models = Object.keys(JAILS.modelInstances);
     MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
       db.collection('models').find().toArray(function(err, result) {
-        console.log('all models', result);
         result.forEach(function(model) {
-          console.log('MODL', model);
           JAILS.modelInstances[model.name] = model;
           JAILS.modelInstances[model.name].methods = JAILS.models[model.instanceOf].instanceMethods(model); // load instanceMethods from prototype
         });
