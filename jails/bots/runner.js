@@ -21,7 +21,7 @@ module.exports = {
     }
 
     function updateBullet(model, interval) {
-      interval = interval || 2000;
+      interval = interval || 500;
       let modelInstance = JAILS.modelInstances[model];
       if (modelInstance) {
       }
@@ -39,7 +39,7 @@ module.exports = {
           data: {'model':'TYPOHERO0','method':'moveBullet','data':{'index':0}}
         });
       // });
-    }, 2000);
+    }, 500);
 
     moveBot('TYPOHERO0', 8000);
     // updateBullet('TYPOHERO0', 2000);
