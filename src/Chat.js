@@ -83,6 +83,7 @@ class Chat extends Component {
             <textarea type="text" value={this.state.currentMessage} onChange={this.handleChange.bind(this)}></textarea>
           </label>
           <input type="submit" value="Submit" />
+          <div>lya lya</div>
         </form>
       </div>
     );
