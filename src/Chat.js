@@ -7,8 +7,10 @@ class Chat extends Component {
     this.state = {
       messages: [],
       currentMessage: '',
-      user: 'Russ'
+      user: 'Russ',
+      greeting: "Welcome back!"
     };
+    this.knownUser = ['Russ'];
   }
 
   handleChange(event) {
@@ -16,7 +18,16 @@ class Chat extends Component {
   }
 
   handleUserChange(event) {
-    this.setState({user: event.target.value});
+    let greeting;
+    const knownUser = this.knownUser.indexOf(event.target.value) > -1;
+    if (knownUser) {
+      greeting = "Welcome back!";
+    }else {
+      greeting = "Nice to meet you";
+      this.knownUser.push(event.target.value);
+    }
+    this.setState({user: event.target.value, greeting: greeting});
+
   }
 
   handleSubmit(event) {
@@ -66,6 +77,7 @@ class Chat extends Component {
     jailsCreator.indexPromise.then(() => {
       self.setChat();
     });
+
   }
 
   render() {
@@ -79,11 +91,11 @@ class Chat extends Component {
         <input type="text" value={this.state.user} onChange={this.handleUserChange.bind(this)} />
         <form onSubmit={this.handleSubmit.bind(this)}>
           <label>
+          {this.state.greeting}
             Message:
             <textarea type="text" value={this.state.currentMessage} onChange={this.handleChange.bind(this)}></textarea>
           </label>
           <input type="submit" value="Submit" />
-          <div>lya lya</div>
         </form>
       </div>
     );
