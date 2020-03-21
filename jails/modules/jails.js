@@ -5,7 +5,7 @@
 var fs = require('fs');
 var getBots = require('./jails-bots.js');
 
-const synchInterval = 10000;
+const synchInterval = 1000;
 
 module.exports = function(app) {
 
@@ -272,7 +272,7 @@ module.exports = function(app) {
         model = JAILS.modelInstances[request.model],
         data = request.data;
 
-      var result = model.methods[method](data) || false;
+      var result = model && model.methods[method](data) || false;
 
       broadcast(server, '{"method":"updateModel", "data":' + JSON.stringify(request) + ', "serverData":' + JSON.stringify(result) + '}');
     },

@@ -79,6 +79,7 @@ module.exports = {
         return response;
       },
       moveBullet: function(params) {
+        self.properties.bullets = self.properties.bullets || [];
         let bulletIndex = params.index;
         let bullet = self.properties.bullets[bulletIndex];
 

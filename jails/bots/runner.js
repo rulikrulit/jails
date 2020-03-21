@@ -41,7 +41,7 @@ module.exports = {
       // });
     }, 2000);
 
-    moveBot('TYPOHERO0', 8000);
+    moveBot('TYPOHERO0', 2000);
     // updateBullet('TYPOHERO0', 2000);
   },
   get: function(msg) {

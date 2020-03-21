@@ -43,9 +43,9 @@ class Typohero extends Component {
         }
       }
 
-      if (currentCol === 5 && currentRow === 8) {
-        className += ' marked';
-      }
+      // if (currentCol === 5 && currentRow === 8) {
+      //   className += ' marked';
+      // }
       if (isInCell(self.state.hero.position)) {
         cellModel = Artur();
       }
