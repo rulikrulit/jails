@@ -4,6 +4,8 @@
 // authorization module
 var fs = require('fs');
 var getBots = require('./jails-bots.js');
+var DefaultModel = require('../models/DefaultModel.js');
+console.log('DefaultModel', DefaultModel);
 
 const synchInterval = 10000;
 
@@ -105,7 +107,7 @@ module.exports = function(app) {
   };
 
   app.helpers.readFolder('./jails/models/', function(err, data, next, fileName) {
-    var modelName = fileName.split('.js')[0].replace('-', '_').toUpperCase(); // remove .js, replace dash with underscore and convert to uppercase
+    var modelName = fileName.split('.js')[0]; // remove .js
     if (err) {
       console.log('ERROR registering model ' + modelName, err);
       next();
@@ -271,7 +273,7 @@ module.exports = function(app) {
         method = request.method,
         model = JAILS.modelInstances[request.model],
         data = request.data;
-
+      console.log(request.model, JAILS.modelInstances);
       var result = model.methods[method](data) || false;
 
       broadcast(server, '{"method":"updateModel", "data":' + JSON.stringify(request) + ', "serverData":' + JSON.stringify(result) + '}');
@@ -381,12 +383,14 @@ module.exports = function(app) {
   JAILS.broadcast = broadcast;
   JAILS.methods = METHODS;
 
-  getBots.then(function(bots) {
-    JAILS.bots = bots;
-    bots.forEach(function(bot) {
-      bot.init(JAILS);
-    });
-  });
+  // TODO: reconfigure bots
+
+  // getBots.then(function(bots) {
+  //   JAILS.bots = bots;
+  //   bots.forEach(function(bot) {
+  //     bot.init(JAILS);
+  //   });
+  // });
 
 
   return JAILS;

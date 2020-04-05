@@ -31,7 +31,7 @@ class Chat extends Component {
   setChat() {
     let self = this;
     console.log('setting chat');
-    var Chat = this.jail.loadModel('CHAT');
+    var Chat = this.jail.loadModel('Chat');
     Chat.on('create', function(chat) {
       console.log('chat create');
       setChat(chat);

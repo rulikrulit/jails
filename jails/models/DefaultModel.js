@@ -1,19 +1,10 @@
-class Chat {
-  static defaultProps = {
-    messages: []
-  }
-  static publicMethods = ['addMessage']
+// Sample model with basic default methods.
+// Didn't figure out how to configure it to use as a base class because FE requires imports and BE requires
 
-  addMessage(params) {
-    this.props.messages.push({
-      user: params.user,
-      message: params.message
-    });
-  }
+class DefaultModel {
+  static defaultProps = {}
+  static publicMethods = []
 
-
-  // Altering this part may effect the app core.
-  // Don't modify anything here unless you know what you are doing
   get props() {
     return this._props;
   }
@@ -31,7 +22,6 @@ class Chat {
       console.error(`Couldn't convert defaultProps ${this.constructor.name} of to JSON`);
     }
   }
-
 }
 
-module.exports = Chat;
+module.exports = DefaultModel;

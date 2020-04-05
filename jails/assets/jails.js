@@ -168,10 +168,10 @@
                 id: id
               };
 
-              JAILS.modelInstances[modelName + id].protectedMethods = JAILS.models[modelName].instanceMethods(JAILS.modelInstances[modelName + id]);
+              var protectedMethodsList = JAILS.models[modelName].publicMethods;
+              JAILS.modelInstances[modelName + id] = new JAILS.models[modelName]({id: id});
               JAILS.modelInstances[modelName + id].methods = {};
 
-              var protectedMethodsList = Object.keys(JAILS.modelInstances[modelName + id].protectedMethods);
               protectedMethodsList.forEach(function(method) {
                 JAILS.modelInstances[modelName + id].methods[method] = function(data) {
                   var request = {
