@@ -69,4 +69,12 @@ var colors = createColors();
 document.getElementById('board').innerHTML = createBoardHtml(setChunks(colors));
 
 
+let jailsCreator = new JailsCreator();
+let jail = jailsCreator.jail;
+jailsCreator.indexPromise.then(() => {
+  console.log('JAILS INITED');
+});
+
+
+
 
