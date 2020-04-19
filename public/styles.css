@@ -1,0 +1,42 @@
+html, body, table, td, tr {
+  padding: 0;
+  margin: 0;
+
+}
+
+h1 {
+  text-align: center;
+  margin: 0;
+  font-size: 16px;
+}
+td {
+  border: 3px solid black;
+
+}
+table {
+  border-collapse: collapse;
+}
+#board {
+  margin: 0 auto;
+}
+.piece {
+  background: blue;
+  border-radius: 50%;
+  border: 2px solid gray;
+  box-sizing: border-box;
+}
+.piece_red {
+  background: red;
+}
+.piece_yellow {
+  background: yellow;
+}
+.piece_green {
+  background: #26d026;
+}
+.piece_orange {
+  background: #f3be00;
+}
+.piece_empty {
+  display: none;
+}
