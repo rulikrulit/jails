@@ -175,6 +175,10 @@ module.exports = function(app) {
     var models = Object.keys(JAILS.modelInstances);
     MongoClient.connect(app.config.db, function(err, db) {
       db.collection('models').find().toArray(function(err, result) {
+        if (!result) {
+          db.close();
+          console.log('no recorded models found!');
+        }
         result.forEach(function(model) {
           JAILS.modelInstances[model.name] = model;
           JAILS.modelInstances[model.name].methods = JAILS.models[model.instanceOf].instanceMethods(model); // load instanceMethods from prototype
