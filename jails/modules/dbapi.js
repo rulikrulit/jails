@@ -8,7 +8,7 @@ module.exports = function(app) {
   console.log('mod', app.modules);
   // Default route
   app.get('/home', app.modules.auth.isAuthenticated, function(req, res){
-    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    MongoClient.connect(app.config.db, function(err, db) {
       if (err) {
         throw err;
       }
@@ -30,7 +30,7 @@ module.exports = function(app) {
   app.get('/api/:collection', app.modules.auth.isAuthenticated, function(req, res) {
     var query = JSON.parse(decodeURI(req.query.data));
     var collection = req.params.collection;
-    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    MongoClient.connect(app.config.db, function(err, db) {
       if (err) {
         throw err;
       }
@@ -49,7 +49,7 @@ module.exports = function(app) {
   app.post('/api/:collection', app.modules.auth.isAuthenticated, function(req, res) {
     var query = JSON.parse(req.body.data);
     var collection = req.params.collection;
-    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    MongoClient.connect(app.config.db, function(err, db) {
       if (err) {
         throw err;
       }
@@ -73,7 +73,7 @@ module.exports = function(app) {
   app.delete('/api/:collection', app.modules.auth.isAuthenticated, function(req, res) {
     var query = JSON.parse(req.body.data);
     var collection = req.params.collection;
-    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    MongoClient.connect(app.config.db, function(err, db) {
       if (err) {
         throw err;
       }

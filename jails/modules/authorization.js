@@ -19,7 +19,7 @@ var User = mongoose.model('User', {
 });
 
 // Connecting to database defined in db.js
-mongoose.connect('mongodb://localhost:27017/alfresco');
+// mongoose.connect('mongodb://localhost:27017/alfresco');
 
 module.exports = function(app) {
   // Setting up passport and session for autentication
