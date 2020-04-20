@@ -135,7 +135,7 @@ module.exports = {
         }
       },
       setActive: function(req) {
-        if (self.properties.removed.length === 0 && req.name === self.properties.currentPlayer) {
+        if (self.properties.removed.length === 0 && req.name && req.name === self.properties.currentPlayer) {
           self.properties.active = req;
         }
       },
