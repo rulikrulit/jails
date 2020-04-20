@@ -8,7 +8,8 @@ var config = {
       ws: 'ws://localhost:8001/ws',
       allowAnonymousWsConnection: true
     },
-    port: 5000
+    port: 5000,
+    db: 'mongodb://localhost:27017/alfresco'
   },
   staging: {
     crypto: {

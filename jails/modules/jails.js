@@ -141,7 +141,7 @@ module.exports = function(app) {
 
     console.log('setting models to synch', JSON.stringify(models));
     models.forEach(function(model) {
-      MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+      MongoClient.connect(app.config.db, function(err, db) {
         if (err) {
           throw err;
         }
@@ -166,14 +166,14 @@ module.exports = function(app) {
     });
   };
   var cleanDb = function() {
-    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    MongoClient.connect(app.config.db, function(err, db) {
       db.collection('models').remove();
       db.close();
     });
   }
   var syncFromDb = function() {
     var models = Object.keys(JAILS.modelInstances);
-    MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    MongoClient.connect(app.config.db, function(err, db) {
       db.collection('models').find().toArray(function(err, result) {
         result.forEach(function(model) {
           JAILS.modelInstances[model.name] = model;
@@ -183,7 +183,7 @@ module.exports = function(app) {
       });
     });
     // models.forEach(function(model) {
-    //   MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+    //   MongoClient.connect(app.config.db, function(err, db) {
     //     db.collection('models').find({name: model}).toArray(function(err, result) {
     //       console.log('syncFromDb', result);
     //       if (result.length === 0) {
@@ -206,7 +206,7 @@ module.exports = function(app) {
   //     promises = [],
   //     THIS;
   //   models.forEach(function(model, i) {
-  //     MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+  //     MongoClient.connect(app.config.db, function(err, db) {
   //       db.collection('models').find({name: model}).toArray(function(err, result) {
   //         if (err) {
   //           throw err;
@@ -233,7 +233,7 @@ module.exports = function(app) {
   //   var models = Object.keys(JAILS.models);
 
   //   models.forEach(function(model) {
-  //     MongoClient.connect('mongodb://localhost:27017/alfresco', function(err, db) {
+  //     MongoClient.connect(app.config.db, function(err, db) {
   //       db.collection('models').remove({name: model});
   //       db.close();
   //     });
