@@ -34,6 +34,10 @@
     skipiti.properties.removed.forEach(function(item) {
       document.querySelector(`[x="${item.x}"][y="${item.y}"]`).classList.add('removed');
     });
+
+    if (skipiti.properties.currentPlayer) {
+      document.getElementById('current-player').innerHTML = skipiti.properties.currentPlayer;
+    }
   }
 
   function createBoardHtml(colors) {
