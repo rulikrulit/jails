@@ -74,7 +74,7 @@ module.exports = {
             return false;
           }
 
-          if (self.properties.board[y][x] !== 'empty') {
+          if (!active) {
             return false;
           }
 
