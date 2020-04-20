@@ -7,11 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <script type="text/javascript" src="jails/jails_polyfill.js"></script>
+    <script type="text/javascript" src="jails/JailsCreator.js"></script>
     <script type="text/javascript" src="http://localhost:5000/jails.js"></script>
     </head>
 <body>
   <h1>Board Game Skippity</h1>
+  <button type="button" id="reset-button">Reset</button>
+  <button type="button" id="finish-move">Finish move</button>
+  <div>
+    <input type="text" name="name" id="name">
+    <button type="button" id="join">Join</button>
+  </div>
   <table id="board">
+  </table>
+  <table id="players">
   </table>
   <script type="text/javascript" src="scripts.js"></script>
 </body>

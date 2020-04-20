@@ -38,5 +38,19 @@ table {
   background: #f3be00;
 }
 .piece_empty {
-  display: none;
+  background: none;
+  border: none;
+}
+
+.removed {
+  opacity: 0.5;
+}
+
+.blinking {
+  animation:blinkingText 0.8s infinite;
+}
+@keyframes blinkingText{
+  0%{   opacity: 1;  }
+  50%{  opacity: 0.7; }
+  100%{ opacity: 1;  }
 }

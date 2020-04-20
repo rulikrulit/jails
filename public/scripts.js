@@ -1,80 +1,143 @@
-function shuffle(a) {
-  var j, x, i;
-  for (i = a.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      x = a[i];
-      a[i] = a[j];
-      a[j] = x;
-  }
-  return a;
-}
-function createColors() {
-  var colors = [];
-  ['red', 'green', 'orange', 'blue', 'yellow'].forEach(function(color, i) {
-    for (let i = 1; i <= 20; i++) {
-      colors.push(color);
+(function() {
+
+  const colors = ['red', 'green', 'orange', 'blue', 'yellow'];
+
+  document.getElementById('name').value = localStorage.getItem('name');
+
+  function calculateSize() {
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let borderSize = 3;
+
+    let base = width;
+
+    if (height < width) {
+      base = height;
     }
-  });
-  return shuffle(colors);
-}
 
-function setChunks(colors) {
-  var i,j,temparray,chunk = 10, result = [];
-  for (i = 0, j = colors.length; i < j; i+=chunk) {
-      temparray = colors.slice(i,i + chunk);
-      result.push(temparray);
+    let offset = borderSize * 11 + 40;
+
+    let size = (base - offset) / 10;
+
+    return size;
   }
 
-  result[4][4] = result[4][5] = result[5][4] = result[5][5] = 'empty';
+  function renderBoard(skipiti) {
+    console.log('rendering', skipiti.properties);
+    createBoardHtml(skipiti.properties.board);
+    createPlayersHtml(skipiti.properties.players);
+    if (skipiti.properties.active) {
+      document.querySelector(`[x="${skipiti.properties.active.x}"][y="${skipiti.properties.active.y}"]`).classList.add('blinking');
+    }
 
-  return result;
-}
 
-function calculateSize() {
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-  let borderSize = 3;
-
-  let base = width;
-
-  if (height < width) {
-    base = height;
+    skipiti.properties.removed.forEach(function(item) {
+      document.querySelector(`[x="${item.x}"][y="${item.y}"]`).classList.add('removed');
+    });
   }
 
-  let offset = borderSize * 11 + 40;
+  function createBoardHtml(colors) {
+    let size = calculateSize();
+    var boardHTML = '<tr>';
+    colors.forEach(function(colorsChunk, i) {
+      colorsChunk.forEach(function(color, j) {
+        boardHTML += `<td><div x=${j} y=${i} class="piece piece_${color}" style="width: ${size}px; height: ${size}px"></div></td>`;
+        if ((j + 1) % 10 === 0) {
+          boardHTML += '</tr><tr>';
+        }
+      });
+    });
+    boardHTML += '</tr>';
 
-  let size = (base - offset) / 10;
+    document.getElementById('board').innerHTML = boardHTML;
 
-  return size;
-}
+  }
 
-function createBoardHtml(colors) {
-  let size = calculateSize();
-  var boardHTML = '<tr>';
-  colors.forEach(function(colorsChunk, i) {
-    colorsChunk.forEach(function(color, j) {
-      boardHTML += `<td><div class="piece piece_${color}" style="width: ${size}px; height: ${size}px"></div></td>`;
-      if ((j + 1) % 10 === 0) {
-        boardHTML += '</tr><tr>';
+  function createPlayersHtml(players) {
+    let size = calculateSize();
+    var boardHTML = '<tr><th></th>';
+    players.forEach(function(player, i) {
+      boardHTML += `<th>${player.name}</th>`;
+    });
+    boardHTML += '</tr>';
+
+    colors.forEach(function(color) {
+      boardHTML += `<tr><td>${color}</td>`;
+      players.forEach(function(player, i) {
+        boardHTML += `<td>${player.bank[color]}</td>`;
+      });
+    });
+    boardHTML += '</tr>';
+
+    document.getElementById('players').innerHTML = boardHTML;
+
+  }
+
+  function setEvents(Skipiti, skipiti) {
+    skipiti.on('reset', function(params, data) {
+      createBoardHtml(data);
+    });
+    skipiti.on('setActive', function(params) {
+      renderBoard(skipiti);
+    });
+    skipiti.on('move', function(params) {
+      renderBoard(skipiti);
+    });
+    skipiti.on('join', function(params) {
+      renderBoard(skipiti);
+    });
+    skipiti.on('finishMove', function(params) {
+      renderBoard(skipiti);
+    });
+    document.getElementById('reset-button').addEventListener('click', skipiti.methods.reset);
+    document.getElementById('finish-move').addEventListener('click', function() {
+      skipiti.methods.finishMove({name: localStorage.getItem('name')});
+    });
+    document.getElementById('join').addEventListener('click', function() {
+      let name = document.getElementById('name').value;
+      localStorage.setItem('name', name);
+      skipiti.methods.join({name: name});
+    });
+
+    document.getElementById('board').addEventListener('click', function(e) {
+      let target = e.target;
+      let x = +target.getAttribute('x');
+      let y = +target.getAttribute('y');
+      if (target.classList.contains('piece')) {
+
+        if (target.classList.contains('piece_empty')) {
+          skipiti.methods.move({x: x, y: y, name: localStorage.getItem('name')});
+        } else {
+          skipiti.methods.setActive({x: x, y: y, name: localStorage.getItem('name')});
+        }
       }
     });
+  }
+
+  let jailsCreator = new JailsCreator();
+  let jail = jailsCreator.jail;
+  jailsCreator.indexPromise.then(() => {
+    const Skipiti = jail.loadModel('SKIPITI');
+    Skipiti.on('create', function(skipiti) {
+      console.log('skipiti create', skipiti);
+      Skipiti.methods.getModel({id: 0});
+    });
+
+    Skipiti.on('getModel', function(skipiti) {
+      console.log('getting skipiti', skipiti);
+      if (skipiti.id === 0) {
+        console.log('skipiti.id 0');
+        setEvents(Skipiti, skipiti);
+        renderBoard(skipiti);
+      } else {
+        Skipiti.methods.create();
+      }
+    });
+
+
+    Skipiti.methods.getModel({id: 0});
   });
-  boardHTML += '</tr>';
-
-  return boardHTML;
-
-}
-var colors = createColors();
-
-document.getElementById('board').innerHTML = createBoardHtml(setChunks(colors));
-
-
-let jailsCreator = new JailsCreator();
-let jail = jailsCreator.jail;
-jailsCreator.indexPromise.then(() => {
-  console.log('JAILS INITED');
-});
-
+})();
 
 
 

@@ -22,11 +22,11 @@ module.exports = function(app) {
   // });
 
   var broadcast = function (server, msg) {
-    getBots.then(function(bots) {
-      bots.forEach(function(bot) {
-        bot.get(msg);
-      });
-    });
+    // getBots.then(function(bots) {
+    //   bots.forEach(function(bot) {
+    //     bot.get(msg);
+    //   });
+    // });
     server.connections.forEach(function (conn) {
         conn.sendText(msg);
     });
