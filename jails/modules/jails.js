@@ -178,6 +178,7 @@ module.exports = function(app) {
         if (!result) {
           db.close();
           console.log('no recorded models found!');
+          return false;
         }
         result.forEach(function(model) {
           JAILS.modelInstances[model.name] = model;
