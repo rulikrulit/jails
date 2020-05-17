@@ -42,7 +42,7 @@
 
   function createBoardHtml(colors) {
     let size = calculateSize();
-    var boardHTML = '<tr>';
+    let boardHTML = '<tr>';
     colors.forEach(function(colorsChunk, i) {
       colorsChunk.forEach(function(color, j) {
         boardHTML += `<td><div x=${j} y=${i} class="piece piece_${color}" style="width: ${size}px; height: ${size}px"></div></td>`;
@@ -55,11 +55,25 @@
 
     document.getElementById('board').innerHTML = boardHTML;
 
+    let scoreLines = document.querySelectorAll('.score-line');
+    for (let line of scoreLines) {
+      if (line.matches('.score-line-horizontal')) {
+        line.style.width = 8 * size + 'px';
+        line.style.height = 1.5 * size + 'px';
+      } else {
+        line.style.width = 1.5 * size + 'px';
+        line.style.height = 8 * size + 'px';
+        line.style.marginTop = -4 * size + 'px';
+      }
+    }
+
+    let boardContainer = document.getElementById('board-container');
+    boardContainer.style.width = (33 + size * 13) + 'px';
   }
 
   function createPlayersHtml(players) {
     let size = calculateSize();
-    var boardHTML = '<tr><th></th>';
+    let boardHTML = '<tr><th></th>';
     players.forEach(function(player, i) {
       boardHTML += `<th>${player.name}</th>`;
     });

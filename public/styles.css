@@ -58,3 +58,26 @@ table {
 .center {
   text-align: center;
 }
+
+.board-container {
+  position: relative;
+  margin: 0 auto;
+}
+
+.score-line-horizontal {
+  position: relative;
+  margin: 20px auto; 
+  border-bottom: 3px solid black;
+}
+
+.score-line-vertical {
+  position: absolute;
+  top: 50%;
+  border-left: 3px solid black;
+}
+
+#score-line-3 {
+  right: 0;
+  border-left: 0;
+  border-right: 3px solid black;
+}
