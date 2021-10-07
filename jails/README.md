@@ -46,9 +46,13 @@ server {
 
         server_name _;
 
-        location /route {
-		    proxy_pass  http://127.0.0.1:5000;
-		}
+        location /app/ {
+            proxy_pass  http://127.0.0.1:5000/;
+        }
+
+        location /ws/ {
+            proxy_pass  http://127.0.0.1:8001/;
+        }
 
         location / {
                 try_files $uri $uri/ =404;
