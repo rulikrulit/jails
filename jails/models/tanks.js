@@ -66,7 +66,7 @@ module.exports = {
           default:
             console.log('unexpected direction for tank model');
         }
-      }
+      },
       add: function(req) {
         var name = req.name,
             type = req.type,
