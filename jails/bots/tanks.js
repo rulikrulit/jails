@@ -25,7 +25,7 @@ module.exports = {
             jails.methods.updateModel({
               server: jails.server,
               conn: 'bot',
-              data: {'model':'TANKS0','method':'move','data':{'type': 'players', 'name':p, 'direction': actions[action].value}}
+              data: {'model':'TANKS0','method':'move','data':{'type': 'players', 'name':p, 'direction': actions[action]}}
             });
               break;
             default:

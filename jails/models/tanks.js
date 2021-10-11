@@ -64,7 +64,7 @@ module.exports = {
             tank.position[1] += tank.speed;
             break;
           default:
-            console.log('unexpected direction for tank model');
+            console.log('unexpected direction for tank model', direction);
         }
       },
       add: function(req) {
