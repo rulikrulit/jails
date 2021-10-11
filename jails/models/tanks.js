@@ -52,16 +52,16 @@ module.exports = {
 
         switch (direction) {
           case 'left':
-            tank.position[0] -= speed;
+            tank.position[0] -= tank.speed;
             break;
           case 'right':
-            tank.position[0] += speed;
+            tank.position[0] += tank.speed;
             break;
           case 'top':
-            tank.position[1] -= speed;
+            tank.position[1] -= tank.speed;
             break;
           case 'bottom':
-            tank.position[1] += speed;
+            tank.position[1] += tank.speed;
             break;
           default:
             console.log('unexpected direction for tank model');
