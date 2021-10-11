@@ -386,12 +386,12 @@ module.exports = function(app) {
   JAILS.broadcast = broadcast;
   JAILS.methods = METHODS;
 
-  // getBots.then(function(bots) {
-  //   JAILS.bots = bots;
-  //   bots.forEach(function(bot) {
-  //     bot.init(JAILS);
-  //   });
-  // });
+  getBots.then(function(bots) {
+    JAILS.bots = bots;
+    bots.forEach(function(bot) {
+      bot.init(JAILS);
+    });
+  });
 
 
   return JAILS;

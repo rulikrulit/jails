@@ -79,7 +79,7 @@ module.exports = {
           speed: 1
         });
 
-        if (type === 'player') {
+        if (type === 'players') {
           self.properties.controllers[name] = {
             actions: {}
           }
