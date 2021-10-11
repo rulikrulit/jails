@@ -11,8 +11,8 @@
         tankElement = document.getElementById('bot-' + bot.name);
       }
 
-      tankElement.style.left = bot.position[0];
-      tankElement.style.top = bot.position[1];
+      tankElement.style.left = bot.position[0] + 'px';
+      tankElement.style.top = bot.position[1] + 'px';
     });
   }
 
