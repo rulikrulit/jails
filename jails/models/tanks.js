@@ -26,21 +26,8 @@ module.exports = {
               speed: 2
             }
           ],
-          players: [
-            {
-              type: 'players',
-              position: [0, 0],
-              name: 'Russ',
-              speed: 1
-            }
-          ],
-          controllers: {
-            Russ: {
-              actions: {
-                move: 'top'
-              }
-            }
-          }
+          players: [],
+          controllers: {}
         }
       },
       move: function(req) {
