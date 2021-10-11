@@ -9,7 +9,7 @@ var config = {
       allowAnonymousWsConnection: true
     },
     port: 5000,
-    db: 'mongodb://localhost:27017/alfresco'
+    db: 'mongodb://localhost:27017/jails'
   },
   staging: {
     crypto: {
@@ -17,13 +17,16 @@ var config = {
       password: 'some password'
     },
     JAILS: {
-      ws: 'ws://ec2-34-209-81-157.us-west-2.compute.amazonaws.com/ws'
-    }
+      ws: 'ws://18.116.59.253/ws',
+      allowAnonymousWsConnection: true
+    },
+    port: 5000,
+    db: 'mongodb://localhost:27017/jails'
   }
 }
 
 module.exports = function(app) {
-  var env = 'dev';
+  var env = 'staging';
 
   // Stab env into all sources
   config[env].env = env;
