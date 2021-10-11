@@ -4,6 +4,10 @@
     console.log('rendering', tanks.properties);
   }
 
+  function createBoardHtml(data) {
+    console.log('Creating board', data);
+  }
+
   function setEvents(Tanks, tanks) {
     tanks.on('reset', function(params, data) {
       createBoardHtml(data);
