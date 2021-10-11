@@ -6,7 +6,7 @@
     tanks.properties.bots.forEach(bot => {
       let tankElement = document.getElementById('bot-' + bot.name);
 
-      if (!el) {
+      if (!tankElement) {
         field.innerHTML += `<div id="bot-${bot.name}" class="tank tank--bot">${bot.name}</div>`;
         tankElement = document.getElementById('bot-' + bot.name);
       }
