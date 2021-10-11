@@ -1,0 +1,31 @@
+html, body, table, td, tr {
+  padding: 0;
+  margin: 0;
+
+}
+
+h1 {
+  text-align: center;
+  margin: 0;
+  font-size: 16px;
+}
+td {
+  border: 3px solid black;
+
+}
+
+#field {
+  width: 610px;
+  height: 610px;
+  position: relative;
+  margin: 0 auto;
+  border: 1px dashed #ccc;
+}
+
+.tank {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: blue;
+  border: 1px solid #ccc;
+}

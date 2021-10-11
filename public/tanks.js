@@ -1,7 +1,19 @@
 (function() {
 
   function renderBoard(tanks) {
+    const field = document.getElementById('field');
     console.log('rendering', tanks.properties);
+    tanks.properties.bots.forEach(bot => {
+      let tankElement = document.getElementById('bot-' + bot.name);
+
+      if (!el) {
+        field.innerHTML += `<div id="bot-${bot.name}" class="tank tank--bot">${bot.name}</div>`;
+        tankElement = document.getElementById('bot-' + bot.name);
+      }
+
+      tankElement.style.left = bot.position[0];
+      tankElement.style.top = bot.position[1];
+    });
   }
 
   function createBoardHtml(data) {
