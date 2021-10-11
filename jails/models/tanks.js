@@ -24,6 +24,30 @@ module.exports = {
               position: [0, 0],
               name: 'bot1',
               speed: 2
+            },
+            {
+              type: 'bots',
+              position: [0, 0],
+              name: 'bot2',
+              speed: 2
+            },
+            {
+              type: 'bots',
+              position: [0, 0],
+              name: 'bot3',
+              speed: 2
+            },
+            {
+              type: 'bots',
+              position: [0, 0],
+              name: 'bot4',
+              speed: 5
+            },
+            {
+              type: 'bots',
+              position: [0, 0],
+              name: 'bot5',
+              speed: 5
             }
           ],
           players: [],

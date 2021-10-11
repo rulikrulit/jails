@@ -11,6 +11,10 @@
         tankElement = document.getElementById('bot-' + bot.name);
       }
 
+      if (bot.speed > 2) {
+        tankElement.classList.add('tank--fast');
+      }
+
       tankElement.style.left = bot.position[0] + 'px';
       tankElement.style.top = bot.position[1] + 'px';
     });

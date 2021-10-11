@@ -29,3 +29,7 @@ td {
   background: blue;
   border: 1px solid #ccc;
 }
+
+.tank--fast {
+  background: red;
+}
