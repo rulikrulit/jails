@@ -1,8 +1,8 @@
 'use strict';
 let JAILS;
 module.exports = {
-  name: 'Runner',
-  description: 'Dummy runner for the game that will use AI in future',
+  name: 'Tanks',
+  description: 'Bot for all tanks processes',
   init: function(jails) {
     console.log('TANKS BOT INITED!', jails);
     JAILS = jails;
