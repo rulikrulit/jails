@@ -3,7 +3,7 @@
 // requires:
 // authorization module
 var fs = require('fs');
-// var getBots = require('./jails-bots.js');
+var getBots = require('./jails-bots.js');
 
 const synchInterval = 1000;
 
@@ -14,19 +14,19 @@ module.exports = function(app) {
   var ws = require('nodejs-websocket');
   var cookieParser = require('cookie-parser');
 
-  // getBots.then(function(bots) {
-  //   bots.forEach(function(bot) {
-  //     console.log('testing bot', bot.name);
-  //     bot.get(bot.name, ' is working properly');
-  //   });
-  // });
+  getBots.then(function(bots) {
+    bots.forEach(function(bot) {
+      console.log('testing bot', bot.name);
+      bot.get(bot.name, ' is working properly');
+    });
+  });
 
   var broadcast = function (server, msg) {
-    // getBots.then(function(bots) {
-    //   bots.forEach(function(bot) {
-    //     bot.get(msg);
-    //   });
-    // });
+    getBots.then(function(bots) {
+      bots.forEach(function(bot) {
+        bot.get(msg);
+      });
+    });
     server.connections.forEach(function (conn) {
         conn.sendText(msg);
     });
