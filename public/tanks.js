@@ -53,7 +53,7 @@
 
     function setKeyDownBindings(e) {
       if (!myTankName) return;
-
+      e.preventDefault();
       const button = e.code;
 
       const moveMap = {
