@@ -53,7 +53,6 @@
 
     function setKeyDownBindings(e) {
       if (!myTankName) return;
-      e.preventDefault();
       const button = e.code;
 
       const moveMap = {
@@ -65,6 +64,7 @@
 
       const moveValue = moveMap[button];
       if (moveValue) {
+        e.preventDefault();
         tanks.methods.scheduleControllerAction({name: myTankName, action: 'move', value: moveValue});
       }
     }
