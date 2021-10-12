@@ -88,7 +88,7 @@
     }
 
     document.addEventListener('keydown', setKeyDownBindings);
-    document.addEventListener('keydown', setKeyUpBindings);
+    document.addEventListener('keyup', setKeyUpBindings);
 
   }
 
