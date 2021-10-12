@@ -33,6 +33,7 @@ module.exports = {
         top: 0,
         bottom: 600
       };
+      const boundary = fieldDimentions[direction];
 
       let illegalMove = false;
 
@@ -70,7 +71,6 @@ module.exports = {
         const direction = schedule.direction;
         schedule.time--;
 
-        const boundary = fieldDimentions[direction];
         const illegalMove = checkIllegalMove(direction, bot.position);
 
         if (!illegalMove) {
