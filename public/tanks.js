@@ -1,27 +1,54 @@
 (function() {
 
+  let myTankName = localStorage.getItem('name');
+
+  function renderTank(tank) {
+    const type = tank.type;
+    let tankElement = document.getElementById(type + tank.name);
+
+    if (!tankElement) {
+      field.innerHTML += `<div id="${type}${tank.name}" class="tank tank--${type}">${tank.name}</div>`;
+      tankElement = document.getElementById(type + tank.name);
+    }
+    if (tank.speed > 2) {
+      tankElement.classList.add('tank--fast');
+    }
+
+    tankElement.style.left = tank.position[0] + 'px';
+    tankElement.style.top = tank.position[1] + 'px';
+  }
+
   function renderBoard(tanks) {
     const field = document.getElementById('field');
     console.log('rendering', tanks.properties);
     tanks.properties.bots.forEach(bot => {
-      let tankElement = document.getElementById('bot-' + bot.name);
-
-      if (!tankElement) {
-        field.innerHTML += `<div id="bot-${bot.name}" class="tank tank--bot">${bot.name}</div>`;
-        tankElement = document.getElementById('bot-' + bot.name);
-      }
-
-      if (bot.speed > 2) {
-        tankElement.classList.add('tank--fast');
-      }
-
-      tankElement.style.left = bot.position[0] + 'px';
-      tankElement.style.top = bot.position[1] + 'px';
+      renderTank(bot);
+    });
+    tanks.properties.players.forEach(player => {
+      renderTank(player);
     });
   }
 
   function createBoardHtml(data) {
     console.log('Creating board', data);
+  }
+
+  function setKeyDownBindings(e) {
+    if (!myTankName) return;
+
+    const button = e.code;
+
+    const moveMap = {
+      ArrowLeft: 'left',
+      ArrowRight: 'right',
+      ArrowDown: 'bottom',
+      ArrowUp: 'top'
+    };
+
+    const moveValue = moveMap[button];
+    if (moveValue) {
+      tanks.methods.scheduleControllerAction({name: myTankName, action: 'move', value: moveValue});
+    }
   }
 
   function setEvents(Tanks, tanks) {
@@ -37,9 +64,13 @@
     document.getElementById('reset-button').addEventListener('click', tanks.methods.reset);
     document.getElementById('join').addEventListener('click', function() {
       let name = document.getElementById('name').value;
+      myTankName = name;
       localStorage.setItem('name', name);
       tanks.methods.add({name: name, type: 'players'});
     });
+
+    document.addEventListener('keydown', setKeyDownBindings);
+    document.addEventListener('keydown', setKeyUpBindings);
 
   }
 
