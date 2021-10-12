@@ -33,24 +33,6 @@
     console.log('Creating board', data);
   }
 
-  function setKeyDownBindings(e) {
-    if (!myTankName) return;
-
-    const button = e.code;
-
-    const moveMap = {
-      ArrowLeft: 'left',
-      ArrowRight: 'right',
-      ArrowDown: 'bottom',
-      ArrowUp: 'top'
-    };
-
-    const moveValue = moveMap[button];
-    if (moveValue) {
-      tanks.methods.scheduleControllerAction({name: myTankName, action: 'move', value: moveValue});
-    }
-  }
-
   function setEvents(Tanks, tanks) {
     tanks.on('reset', function(params, data) {
       createBoardHtml(data);
@@ -68,6 +50,42 @@
       localStorage.setItem('name', name);
       tanks.methods.add({name: name, type: 'players'});
     });
+
+    function setKeyDownBindings(e) {
+      if (!myTankName) return;
+
+      const button = e.code;
+
+      const moveMap = {
+        ArrowLeft: 'left',
+        ArrowRight: 'right',
+        ArrowDown: 'bottom',
+        ArrowUp: 'top'
+      };
+
+      const moveValue = moveMap[button];
+      if (moveValue) {
+        tanks.methods.scheduleControllerAction({name: myTankName, action: 'move', value: moveValue});
+      }
+    }
+
+    function setKeyUpBindings(e) {
+      if (!myTankName) return;
+
+      const button = e.code;
+
+      const moveMap = {
+        ArrowLeft: 'left',
+        ArrowRight: 'right',
+        ArrowDown: 'bottom',
+        ArrowUp: 'top'
+      };
+
+      const moveValue = moveMap[button];
+      if (moveValue) {
+        tanks.methods.scheduleControllerAction({name: myTankName, action: 'move', value: null});
+      }
+    }
 
     document.addEventListener('keydown', setKeyDownBindings);
     document.addEventListener('keydown', setKeyUpBindings);
