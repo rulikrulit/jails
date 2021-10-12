@@ -39,16 +39,16 @@ module.exports = {
 
       switch (direction) {
         case 'left':
-          illegalMove = bot.position[0] <= boundary;
+          illegalMove = position[0] <= boundary;
           break;
         case 'right':
-          illegalMove = bot.position[0] >= boundary;
+          illegalMove = position[0] >= boundary;
           break;
         case 'top':
-          illegalMove = bot.position[1] <= boundary;
+          illegalMove = position[1] <= boundary;
           break;
         case 'bottom':
-          illegalMove = bot.position[1] >= boundary;
+          illegalMove = position[1] >= boundary;
           break;
       }
 
