@@ -110,6 +110,7 @@ module.exports = {
 
   },
   get: function(msg) {
-    console.log('bot recieved', msg);
+    // This is bot getting data from app callback
+    // console.log('bot recieved', msg);
   }
 }
