@@ -63,7 +63,7 @@ module.exports = {
       const bullets = JAILS.modelInstances['TANKS0'].properties.bullets;
 
 
-      bots.forEach(bot => {
+      bots && bots.forEach(bot => {
         if (!botsSchedule[bot.name] || botsSchedule[bot.name].time <= 0) {
           botsSchedule[bot.name] = generateBotSchedule();
         }
@@ -84,7 +84,7 @@ module.exports = {
 
       });
 
-      bullets.forEach(bullet => {
+      bullets && bullets.forEach(bullet => {
         const direction = bullet.direction;
 
         const illegalMove = checkIllegalMove(direction, bullet.position);
@@ -99,7 +99,7 @@ module.exports = {
 
       });
 
-      players.forEach(p => {
+      players && players.forEach(p => {
         const actions = controllers[p].actions;
         const actionNames = Object.keys(actions);
         actionNames.forEach(action => {

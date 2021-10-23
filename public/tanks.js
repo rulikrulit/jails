@@ -18,11 +18,26 @@
     tankElement.style.top = tank.position[1] + 'px';
   }
 
+  function renderBullet(bullet) {
+    let bulletElement = document.getElementById('bullet' + bullet.name);
+
+    if (!bulletElement) {
+      field.innerHTML += `<div id="bullet${tank.name}" class="bullet">${bullet.name}</div>`;
+      bulletElement = document.getElementById('bullet' + bullet.name);
+    }
+
+    bulletElement.style.left = tank.position[0] + 'px';
+    bulletElement.style.top = tank.position[1] + 'px';
+  }
+
   function renderBoard(tanks) {
     const field = document.getElementById('field');
     console.log('rendering', tanks.properties);
     tanks.properties.bots.forEach(bot => {
       renderTank(bot);
+    });
+    tanks.properties.bullets.forEach(bullet => {
+      renderTank(bullet);
     });
     tanks.properties.players.forEach(player => {
       renderTank(player);
