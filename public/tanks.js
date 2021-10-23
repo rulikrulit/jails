@@ -60,6 +60,13 @@
     tanks.on('addTank', function(params) {
       renderBoard(tanks);
     });
+    tanks.on('addBullet', function(params) {
+      renderBoard(tanks);
+    });
+    tanks.on('removeBullet', function(params) {
+      const bulletElement = document.getElementById('bullet' + bullet.name);
+      bulletElement && bulletElement.outerHTML = '';
+    });
     document.getElementById('reset-button').addEventListener('click', tanks.methods.reset);
     document.getElementById('join').addEventListener('click', function() {
       let name = document.getElementById('name').value;
