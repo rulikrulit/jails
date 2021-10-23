@@ -46,14 +46,14 @@
     });
   }
 
-  function createBoardHtml(data) {
+  function createBoardHtml(tanks) {
     document.getElementById('field').innerHTML = '';
     renderBoard(tanks);
   }
 
   function setEvents(Tanks, tanks) {
     tanks.on('reset', function(params, data) {
-      createBoardHtml(data);
+      createBoardHtml(tanks);
     });
     tanks.on('move', function(params) {
       const entity = tanks.properties[params.type].find(ent => ent.name === params.name);
