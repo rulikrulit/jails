@@ -94,12 +94,14 @@ module.exports = {
             position = tank.position,
             direction = tank.direction;
 
+        const lastBullet = self.properties.bullets[self.properties.bullets.length - 1];
+
         self.properties.bullets.push({
           position: position,
           owner: tank,
           speed: 10,
           direction: direction,
-          name: self.properties.bullets[self.properties.bullets.length - 1].name + 1
+          name: lastBullet ? lastBullet.name + 1 : 0
         });
       },
       addTank: function(req) {
