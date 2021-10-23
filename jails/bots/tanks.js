@@ -60,6 +60,7 @@ module.exports = {
       const controllers = JAILS.modelInstances['TANKS0'].properties.controllers;
       const players = Object.keys(controllers);
       const bots = JAILS.modelInstances['TANKS0'].properties.bots;
+      const bullets = JAILS.modelInstances['TANKS0'].properties.bullets;
 
 
       bots.forEach(bot => {
@@ -78,6 +79,21 @@ module.exports = {
             server: jails.server,
             conn: 'bot',
             data: {'model':'TANKS0','method':'move','data':{'type': 'bots', 'name':bot.name, 'direction': direction}}
+          });
+        }
+
+      });
+
+      bullets.forEach(bullet => {
+        const direction = bullet.direction;
+
+        const illegalMove = checkIllegalMove(direction, bullet.position);
+
+        if (!illegalMove) {
+          jails.methods.updateModel({
+            server: jails.server,
+            conn: 'bot',
+            data: {'model':'TANKS0','method':'move','data':{'type': 'bullets', 'name':bullet.name, 'direction': direction}}
           });
         }
 

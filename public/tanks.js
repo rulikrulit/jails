@@ -40,7 +40,7 @@
     tanks.on('move', function(params) {
       renderBoard(tanks);
     });
-    tanks.on('add', function(params) {
+    tanks.on('addTank', function(params) {
       renderBoard(tanks);
     });
     document.getElementById('reset-button').addEventListener('click', tanks.methods.reset);
@@ -48,7 +48,7 @@
       let name = document.getElementById('name').value;
       myTankName = name;
       localStorage.setItem('name', name);
-      tanks.methods.add({name: name, type: 'players'});
+      tanks.methods.addTank({name: name, type: 'players'});
     });
 
     function setKeyDownBindings(e) {
@@ -66,6 +66,10 @@
       if (moveValue) {
         e.preventDefault();
         tanks.methods.scheduleControllerAction({name: myTankName, action: 'move', value: moveValue});
+      }
+
+      if (button === 'Space') {
+        tanks.methods.addBullet({name: myTankName, type: 'players'});
       }
     }
 

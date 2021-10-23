@@ -23,34 +23,40 @@ module.exports = {
               type: 'bots',
               position: [0, 0],
               name: 'bot1',
-              speed: 2
+              speed: 2,
+              direction: 'bottom'
             },
             {
               type: 'bots',
               position: [0, 0],
               name: 'bot2',
-              speed: 2
+              speed: 2,
+              direction: 'bottom'
             },
             {
               type: 'bots',
               position: [0, 0],
               name: 'bot3',
-              speed: 2
+              speed: 2,
+              direction: 'bottom'
             },
             {
               type: 'bots',
               position: [0, 0],
               name: 'bot4',
-              speed: 5
+              speed: 5,
+              direction: 'bottom'
             },
             {
               type: 'bots',
               position: [0, 0],
               name: 'bot5',
-              speed: 5
+              speed: 5,
+              direction: 'bottom'
             }
           ],
           players: [],
+          bullets: [],
           controllers: {}
         }
       },
@@ -59,26 +65,44 @@ module.exports = {
             direction = req.direction,
             type = req.type;
 
-        var tank = self.properties[type].find(tank => name === tank.name);
+        var entity = self.properties[type].find(e => name === e.name);
 
         switch (direction) {
           case 'left':
-            tank.position[0] -= tank.speed;
+            entity.position[0] -= entity.speed;
+            entity.direction = direction;
             break;
           case 'right':
-            tank.position[0] += tank.speed;
+            entity.position[0] += entity.speed;
+            entity.direction = direction;
             break;
           case 'top':
-            tank.position[1] -= tank.speed;
+            entity.position[1] -= entity.speed;
+            entity.direction = direction;
             break;
           case 'bottom':
-            tank.position[1] += tank.speed;
+            entity.position[1] += entity.speed;
+            entity.direction = direction;
             break;
           // default:
           //   console.log('unexpected direction for tank model', direction);
         }
       },
-      add: function(req) {
+      addBullet: function(req) {
+        var type = req.type,
+            tank = self.properties[type].find(t => t.name === req.name),
+            position = tank.position,
+            direction = tank.direction;
+
+        self.properties.bullets.push({
+          position: position,
+          owner: tank,
+          speed: 10,
+          direction: direction,
+          name: self.properties.bullets[self.properties.bullets.length - 1].name + 1
+        });
+      },
+      addTank: function(req) {
         var name = req.name,
             type = req.type,
             position = [0, 0];
@@ -87,7 +111,8 @@ module.exports = {
           type: type,
           position: position,
           name: name,
-          speed: 1
+          speed: 1,
+          direction: 'bottom'
         });
 
         if (type === 'players') {
