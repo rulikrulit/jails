@@ -71,6 +71,10 @@
       renderBoard(tanks);
     });
     tanks.on('removeTank', function(params) {
+      const tankElement = document.getElementById(params.type + params.name);
+      if (tankElement) {
+        tankElement.outerHTML = '';
+      }
       renderBoard(tanks);
     });
     tanks.on('addBullet', function(params) {
