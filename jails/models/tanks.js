@@ -70,6 +70,7 @@ module.exports = {
             type = req.type;
 
         var entity = self.properties[type].find(e => name === e.name);
+        if (!entity) return;
 
         switch (direction) {
           case 'left':
