@@ -22,7 +22,7 @@
     let bulletElement = document.getElementById('bullet' + bullet.name);
 
     if (!bulletElement) {
-      field.innerHTML += `<div id="bullet${tank.name}" class="bullet">${bullet.name}</div>`;
+      field.innerHTML += `<div id="bullet${bullet.name}" class="bullet">${bullet.name}</div>`;
       bulletElement = document.getElementById('bullet' + bullet.name);
     }
 
