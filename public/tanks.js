@@ -32,14 +32,16 @@
 
   function renderBoard(tanks) {
     const field = document.getElementById('field');
-    console.log('rendering', tanks.properties);
-    tanks.properties.bots.forEach(bot => {
+    const players = tanks.properties.players;
+    const bots = tanks.properties.bots;
+    const bullets = tanks.properties.bullets;
+    bots && bots.forEach(bot => {
       renderTank(bot);
     });
-    tanks.properties.bullets.forEach(bullet => {
+    bullets && bullets.forEach(bullet => {
       renderTank(bullet);
     });
-    tanks.properties.players.forEach(player => {
+    players && players.forEach(player => {
       renderTank(player);
     });
   }
