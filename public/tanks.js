@@ -48,6 +48,7 @@
 
   function createBoardHtml(data) {
     document.getElementById('field').innerHTML = '';
+    renderBoard(tanks);
   }
 
   function setEvents(Tanks, tanks) {
