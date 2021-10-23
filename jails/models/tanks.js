@@ -114,7 +114,7 @@ module.exports = {
 
         const bulletIndex = self.properties.bullets.findIndex(b => b.name === name);
 
-        if (bulletIndex) {
+        if (bulletIndex !== -1) {
           self.properties.bullets.splice(bulletIndex, 1);
         }
       },
@@ -124,7 +124,7 @@ module.exports = {
 
         const tankIndex = self.properties[type].findIndex(b => b.name === name);
 
-        if (tankIndex) {
+        if (tankIndex !== -1) {
           self.properties[type].splice(tankIndex, 1);
         }
       },
