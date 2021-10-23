@@ -55,7 +55,17 @@
       createBoardHtml(data);
     });
     tanks.on('move', function(params) {
-      renderBoard(tanks);
+      const entity = tanks.properties[params.type].find(name => name === params.name);
+
+      switch (params.type) {
+        case 'bots':
+        case 'players':
+          renderTank(entity);
+          break;
+        case 'bullets':
+          renderBullet(bullet);
+          break;
+      }
     });
     tanks.on('addTank', function(params) {
       renderBoard(tanks);
