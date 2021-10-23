@@ -26,8 +26,8 @@
       bulletElement = document.getElementById('bullet' + bullet.name);
     }
 
-    bulletElement.style.left = tank.position[0] + 'px';
-    bulletElement.style.top = tank.position[1] + 'px';
+    bulletElement.style.left = bullet.position[0] + 'px';
+    bulletElement.style.top = bullet.position[1] + 'px';
   }
 
   function renderBoard(tanks) {
