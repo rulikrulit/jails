@@ -65,7 +65,9 @@
     });
     tanks.on('removeBullet', function(params) {
       const bulletElement = document.getElementById('bullet' + bullet.name);
-      bulletElement && bulletElement.outerHTML = '';
+      if (bulletElement) {
+        bulletElement.outerHTML = '';
+      }
     });
     document.getElementById('reset-button').addEventListener('click', tanks.methods.reset);
     document.getElementById('join').addEventListener('click', function() {
