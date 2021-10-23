@@ -89,7 +89,13 @@ module.exports = {
 
         const illegalMove = checkIllegalMove(direction, bullet.position);
 
-        if (!illegalMove) {
+        if (illegalMove) {
+          jails.methods.updateModel({
+            server: jails.server,
+            conn: 'bot',
+            data: {'model':'TANKS0','method':'removeBullet','data':{'type': 'bullets', 'name':bullet.name}}
+          });
+        } else {
           jails.methods.updateModel({
             server: jails.server,
             conn: 'bot',

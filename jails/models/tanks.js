@@ -104,6 +104,15 @@ module.exports = {
           name: lastBullet ? lastBullet.name + 1 : 0
         });
       },
+      removeBullet: function(req) {
+        var name = req.name;
+
+        const bulletIndex = self.properties.bullets.findIndex(b => b.name === "name");
+
+        if (bulletIndex) {
+          self.properties.bullets.splice(bulletIndex, 1);
+        }
+      },
       addTank: function(req) {
         var name = req.name,
             type = req.type,
