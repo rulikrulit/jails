@@ -39,7 +39,7 @@
       renderTank(bot);
     });
     bullets && bullets.forEach(bullet => {
-      renderTank(bullet);
+      renderBullet(bullet);
     });
     players && players.forEach(player => {
       renderTank(player);
