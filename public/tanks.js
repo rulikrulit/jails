@@ -68,6 +68,7 @@
       if (bulletElement) {
         bulletElement.outerHTML = '';
       }
+      renderBoard(tanks);
     });
     document.getElementById('reset-button').addEventListener('click', tanks.methods.reset);
     document.getElementById('join').addEventListener('click', function() {
