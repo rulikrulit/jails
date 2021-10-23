@@ -63,7 +63,7 @@
           renderTank(entity);
           break;
         case 'bullets':
-          renderBullet(bullet);
+          renderBullet(entity);
           break;
       }
     });
