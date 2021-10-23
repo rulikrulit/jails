@@ -56,6 +56,14 @@ module.exports = {
 
     }
 
+    function isObjectWithinRange(position1, position2, distortion) {
+      if (Math.abs(position1[0] - position2[0]) < distortion[0] &&
+          Math.abs(position1[1] - position2[1]) < distortion[1]
+        ) {
+        return true;
+      }
+    }
+
     setInterval(() => {
       const controllers = JAILS.modelInstances['TANKS0'].properties.controllers;
       const players = Object.keys(controllers);
@@ -89,20 +97,40 @@ module.exports = {
 
         const illegalMove = checkIllegalMove(direction, bullet.position);
 
+
         if (illegalMove) {
           jails.methods.updateModel({
             server: jails.server,
             conn: 'bot',
             data: {'model':'TANKS0','method':'removeBullet','data':{'type': 'bullets', 'name':bullet.name}}
           });
-        } else {
-          jails.methods.updateModel({
-            server: jails.server,
-            conn: 'bot',
-            data: {'model':'TANKS0','method':'move','data':{'type': 'bullets', 'name':bullet.name, 'direction': direction}}
-          });
+          return;
         }
 
+        // check bot hit
+        bots && bots.forEach(bot => {
+          const isHit = isObjectWithinRange(bullet.position, bot.position, [15, 15]);
+
+          if (isHit) {
+            jails.methods.updateModel({
+              server: jails.server,
+              conn: 'bot',
+              data: {'model':'TANKS0','method':'removeBullet','data':{'type': 'bullets', 'name':bullet.name}}
+            });
+            jails.methods.updateModel({
+              server: jails.server,
+              conn: 'bot',
+              data: {'model':'TANKS0','method':'removeTank','data':{'type': 'bots', 'name':bot.name}}
+            });
+            return;
+          }
+        });
+
+        jails.methods.updateModel({
+          server: jails.server,
+          conn: 'bot',
+          data: {'model':'TANKS0','method':'move','data':{'type': 'bullets', 'name':bullet.name, 'direction': direction}}
+        });
       });
 
       players && players.forEach(p => {

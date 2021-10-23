@@ -70,6 +70,9 @@
     tanks.on('addTank', function(params) {
       renderBoard(tanks);
     });
+    tanks.on('removeTank', function(params) {
+      renderBoard(tanks);
+    });
     tanks.on('addBullet', function(params) {
       renderBoard(tanks);
     });

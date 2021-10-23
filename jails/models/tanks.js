@@ -117,6 +117,16 @@ module.exports = {
           self.properties.bullets.splice(bulletIndex, 1);
         }
       },
+      removeTank: function(req) {
+        var name = req.name,
+            type = req.type;
+
+        const tankIndex = self.properties[type].findIndex(b => b.name === name);
+
+        if (tankIndex) {
+          self.properties[type].splice(tankIndex, 1);
+        }
+      },
       addTank: function(req) {
         var name = req.name,
             type = req.type,
@@ -141,6 +151,9 @@ module.exports = {
             action = req.action,
             value = req.value;
 
+        if (!self.properties.controllers[name]) {
+          return;
+        }
         self.properties.controllers[name].actions[action] = value;
       }
     };
