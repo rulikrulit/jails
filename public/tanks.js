@@ -64,7 +64,7 @@
       renderBoard(tanks);
     });
     tanks.on('removeBullet', function(params) {
-      const bulletElement = document.getElementById('bullet' + bullet.name);
+      const bulletElement = document.getElementById('bullet' + params.name);
       if (bulletElement) {
         bulletElement.outerHTML = '';
       }
