@@ -91,7 +91,7 @@ module.exports = {
       addBullet: function(req) {
         var type = req.type,
             tank = self.properties[type].find(t => t.name === req.name),
-            position = tank.position,
+            position = [...tank.position],
             direction = tank.direction;
 
         const lastBullet = self.properties.bullets[self.properties.bullets.length - 1];
