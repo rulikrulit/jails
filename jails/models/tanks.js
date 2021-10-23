@@ -57,7 +57,11 @@ module.exports = {
           ],
           players: [],
           bullets: [],
-          controllers: {}
+          controllers: {},
+          meta: {
+            lastBulletId: 0,
+            lastBotId: 5,
+          }
         }
       },
       move: function(req) {
@@ -94,14 +98,14 @@ module.exports = {
             position = [...tank.position],
             direction = tank.direction;
 
-        const lastBullet = self.properties.bullets[self.properties.bullets.length - 1];
+        const id = self.properties.meta.lastBulletId++;
 
         self.properties.bullets.push({
           position: position,
           owner: tank,
           speed: 10,
           direction: direction,
-          name: lastBullet ? lastBullet.name + 1 : 0
+          name: id
         });
       },
       removeBullet: function(req) {
