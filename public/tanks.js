@@ -55,7 +55,7 @@
       createBoardHtml(data);
     });
     tanks.on('move', function(params) {
-      const entity = tanks.properties[params.type].find(name => name === params.name);
+      const entity = tanks.properties[params.type].find(ent => ent.name === params.name);
 
       switch (params.type) {
         case 'bots':
