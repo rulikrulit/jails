@@ -47,7 +47,7 @@
   }
 
   function createBoardHtml(data) {
-    console.log('Creating board', data);
+    document.getElementById('field').innerHTML = '';
   }
 
   function setEvents(Tanks, tanks) {
