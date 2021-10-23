@@ -111,7 +111,7 @@ module.exports = {
       removeBullet: function(req) {
         var name = req.name;
 
-        const bulletIndex = self.properties.bullets.findIndex(b => b.name === "name");
+        const bulletIndex = self.properties.bullets.findIndex(b => b.name === name);
 
         if (bulletIndex) {
           self.properties.bullets.splice(bulletIndex, 1);
