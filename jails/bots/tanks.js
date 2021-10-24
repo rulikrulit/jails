@@ -17,7 +17,7 @@ module.exports = {
 
     function generateBotSchedule() {
       const directions = ['left', 'right', 'top', 'bottom'];
-      const time = getRandomInt(20, 200);
+      const time = getRandomInt(10, 150);
       const direction = directions[getRandomInt(0, 3)];
 
       return {
@@ -88,6 +88,8 @@ module.exports = {
             conn: 'bot',
             data: {'model':'TANKS0','method':'move','data':{'type': 'bots', 'name':bot.name, 'direction': direction}}
           });
+        } else {
+          botsSchedule[bot.name] = generateBotSchedule();
         }
 
       });
