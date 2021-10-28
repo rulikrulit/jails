@@ -9,13 +9,18 @@
     if (!tankElement) {
       field.innerHTML += 
       `<div id="${type}${tank.name}" class="tank tank--${type} tank-direction--${tank.direction}">
-        <img src="images/tank${tankModel}.jpg" />
+        <img src="images/tank${tankModel}.png" />
       </div>`;
       tankElement = document.getElementById(type + tank.name);
     }
     if (tank.speed > 2) {
       tankElement.classList.add('tank--fast');
     }
+    tankElement.classList.remote('tank-direction--top');
+    tankElement.classList.remote('tank-direction--bottom');
+    tankElement.classList.remote('tank-direction--left');
+    tankElement.classList.remote('tank-direction--right');
+    tankElement.classList.add('tank-direction--' + tank.direction);
 
     tankElement.style.left = tank.position[0] + 'px';
     tankElement.style.top = tank.position[1] + 'px';
