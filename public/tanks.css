@@ -42,7 +42,7 @@ td {
 .tank-direction--right {
   transform: rotate(180deg);
 }
-.tank-direction--right {
+.tank-direction--bottom {
   transform: rotate(270deg);
 }
 
