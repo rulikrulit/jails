@@ -26,8 +26,19 @@ td {
   position: absolute;
   width: 10px;
   height: 10px;
-  background: blue;
-  border: 1px solid #ccc;
+}
+
+
+.tank-direction--left {
+}
+.tank-direction--top {
+  transition: rotate(90deg);
+}
+.tank-direction--right {
+  transition: rotate(180deg);
+}
+.tank-direction--right {
+  transition: rotate(270deg);
 }
 
 .bullet {

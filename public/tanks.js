@@ -5,9 +5,12 @@
   function renderTank(tank) {
     const type = tank.type;
     let tankElement = document.getElementById(type + tank.name);
-
+    const tankModel = tank.speed > 2 ? 1 : 2;
     if (!tankElement) {
-      field.innerHTML += `<div id="${type}${tank.name}" class="tank tank--${type}">${tank.name}</div>`;
+      field.innerHTML += 
+      `<div id="${type}${tank.name}" class="tank tank--${type} tank-direction--${tank.direction}">
+        <img src="images/tank${tankModel}.jpg" />
+      </div>`;
       tankElement = document.getElementById(type + tank.name);
     }
     if (tank.speed > 2) {
