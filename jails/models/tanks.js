@@ -96,7 +96,7 @@ module.exports = {
       addBullet: function(req) {
         var type = req.type,
             tank = self.properties[type].find(t => t.name === req.name),
-            position = [...tank.position],
+            position = [tank.position[0] + 20, tank.position[1] + 20],
             direction = tank.direction;
 
         const id = self.properties.meta.lastBulletId++;
