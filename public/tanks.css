@@ -37,13 +37,13 @@ td {
 .tank-direction--left {
 }
 .tank-direction--top {
-  transition: rotate(90deg);
+  transform: rotate(90deg);
 }
 .tank-direction--right {
-  transition: rotate(180deg);
+  transform: rotate(180deg);
 }
 .tank-direction--right {
-  transition: rotate(270deg);
+  transform: rotate(270deg);
 }
 
 .bullet {
