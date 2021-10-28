@@ -16,10 +16,10 @@
     if (tank.speed > 2) {
       tankElement.classList.add('tank--fast');
     }
-    tankElement.classList.remote('tank-direction--top');
-    tankElement.classList.remote('tank-direction--bottom');
-    tankElement.classList.remote('tank-direction--left');
-    tankElement.classList.remote('tank-direction--right');
+    tankElement.classList.remove('tank-direction--top');
+    tankElement.classList.remove('tank-direction--bottom');
+    tankElement.classList.remove('tank-direction--left');
+    tankElement.classList.remove('tank-direction--right');
     tankElement.classList.add('tank-direction--' + tank.direction);
 
     tankElement.style.left = tank.position[0] + 'px';
