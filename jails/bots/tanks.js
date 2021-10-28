@@ -111,7 +111,7 @@ module.exports = {
 
         // check bot hit
         bots && bots.forEach(bot => {
-          const isHit = isObjectWithinRange(bullet.position, bot.position, [20, 20]);
+          const isHit = isObjectWithinRange(bullet.position, [bot.position[0] + 20, bot.position[1]], [20, 20]);
 
           if (isHit) {
             jails.methods.updateModel({
