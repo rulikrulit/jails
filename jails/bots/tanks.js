@@ -95,6 +95,7 @@ module.exports = {
         const schedule = botsSchedule[bot.name];
         const direction = schedule.direction;
         schedule.time--;
+        botsFireSchedule[bot.name]--;
 
         const illegalMove = checkIllegalMove(direction, bot.position);
 
