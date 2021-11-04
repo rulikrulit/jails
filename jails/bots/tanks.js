@@ -126,7 +126,7 @@ module.exports = {
           return;
         }
 
-        if (bullet.tank.type === 'players') {
+        if (bullet.owner.type === 'players') {
           bots && bots.forEach(bot => {
             const isHit = isObjectWithinRange(bullet.position, [bot.position[0] + 20, bot.position[1] + 20], [20, 20]);
 
@@ -146,7 +146,7 @@ module.exports = {
           });
         }
 
-        if (bullet.tank.type === 'bots') {
+        if (bullet.owner.type === 'bots') {
           players && players.forEach(player => {
             const isHit = isObjectWithinRange(bullet.position, [player.position[0] + 20, player.position[1] + 20], [20, 20]);
 
