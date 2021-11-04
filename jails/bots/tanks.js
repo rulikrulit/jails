@@ -175,7 +175,10 @@ module.exports = {
       });
 
       players && players.forEach(p => {
-        const actions = controllers[p].actions;
+        const actions = controllers[p]?.actions;
+        if (!actions) {
+          return;
+        }
         const actionNames = Object.keys(actions);
         actionNames.forEach(action => {
           switch (action) {
