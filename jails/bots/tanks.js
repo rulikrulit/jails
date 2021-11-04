@@ -126,24 +126,45 @@ module.exports = {
           return;
         }
 
-        // check bot hit
-        bots && bots.forEach(bot => {
-          const isHit = isObjectWithinRange(bullet.position, [bot.position[0] + 20, bot.position[1] + 20], [20, 20]);
+        if (bullet.tank.type === 'players') {
+          bots && bots.forEach(bot => {
+            const isHit = isObjectWithinRange(bullet.position, [bot.position[0] + 20, bot.position[1] + 20], [20, 20]);
 
-          if (isHit) {
-            jails.methods.updateModel({
-              server: jails.server,
-              conn: 'bot',
-              data: {'model':'TANKS0','method':'removeBullet','data':{'type': 'bullets', 'name':bullet.name}}
-            });
-            jails.methods.updateModel({
-              server: jails.server,
-              conn: 'bot',
-              data: {'model':'TANKS0','method':'removeTank','data':{'type': 'bots', 'name':bot.name}}
-            });
-            return;
-          }
-        });
+            if (isHit) {
+              jails.methods.updateModel({
+                server: jails.server,
+                conn: 'bot',
+                data: {'model':'TANKS0','method':'removeBullet','data':{'type': 'bullets', 'name':bullet.name}}
+              });
+              jails.methods.updateModel({
+                server: jails.server,
+                conn: 'bot',
+                data: {'model':'TANKS0','method':'removeTank','data':{'type': 'bots', 'name':bot.name}}
+              });
+              return;
+            }
+          });
+        }
+
+        if (bullet.tank.type === 'bots') {
+          players && players.forEach(player => {
+            const isHit = isObjectWithinRange(bullet.position, [player.position[0] + 20, player.position[1] + 20], [20, 20]);
+
+            if (isHit) {
+              jails.methods.updateModel({
+                server: jails.server,
+                conn: 'bot',
+                data: {'model':'TANKS0','method':'removeBullet','data':{'type': 'bullets', 'name':bullet.name}}
+              });
+              jails.methods.updateModel({
+                server: jails.server,
+                conn: 'bot',
+                data: {'model':'TANKS0','method':'removeTank','data':{'type': 'players', 'name':player.name}}
+              });
+              return;
+            }
+          });
+        }
 
         jails.methods.updateModel({
           server: jails.server,
