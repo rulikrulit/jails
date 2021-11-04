@@ -127,6 +127,10 @@ module.exports = {
         if (tankIndex !== -1) {
           self.properties[type].splice(tankIndex, 1);
         }
+
+        if (type === 'players') {
+          delete self.properties.controllers[name];
+        }
       },
       addTank: function(req) {
         var name = req.name,

@@ -182,6 +182,9 @@ module.exports = {
             case 'move':
               const direction = actions[action];
               const tank = JAILS.modelInstances['TANKS0'].properties.players.find(t => t.name === p);
+              if (!tank) {
+                return;
+              }
               const illegalMove = checkIllegalMove(direction, tank.position);
 
               if (!illegalMove) {
