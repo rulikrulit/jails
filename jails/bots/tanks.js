@@ -74,6 +74,7 @@ module.exports = {
     setInterval(() => {
       const controllers = JAILS.modelInstances['TANKS0'].properties.controllers;
       const players = Object.keys(controllers);
+      const playerTanks = JAILS.modelInstances['TANKS0'].properties.players;
       const bots = JAILS.modelInstances['TANKS0'].properties.bots;
       const bullets = JAILS.modelInstances['TANKS0'].properties.bullets;
 
@@ -147,7 +148,7 @@ module.exports = {
         }
 
         if (bullet.owner.type === 'bots') {
-          players && players.forEach(player => {
+          playerTanks && playerTanks.forEach(player => {
             const isHit = isObjectWithinRange(bullet.position, [player.position[0] + 20, player.position[1] + 20], [20, 20]);
 
             if (isHit) {
