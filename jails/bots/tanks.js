@@ -8,6 +8,7 @@ module.exports = {
     JAILS = jails;
 
     const botsSchedule = {};
+    const botsFireSchedule = {};
 
     function getRandomInt(min, max) {
         min = Math.ceil(min);
@@ -24,6 +25,12 @@ module.exports = {
         time: time,
         direction: direction
       };
+    }
+
+    function generateBotFireSchedule() {
+      const time = getRandomInt(25, 125);
+
+      return time;
     }
 
     function checkIllegalMove(direction, position) {
@@ -74,6 +81,15 @@ module.exports = {
       bots && bots.forEach(bot => {
         if (!botsSchedule[bot.name] || botsSchedule[bot.name].time <= 0) {
           botsSchedule[bot.name] = generateBotSchedule();
+        }
+
+        if (!botsFireSchedule[bot.name] || botsFireSchedule[bot.name] <= 0) {
+          jails.methods.updateModel({
+            server: jails.server,
+            conn: 'bot',
+            data: {'model':'TANKS0','method':'addBullet','data':{'type': 'bots', 'name':bot.name}}
+          });
+          botsFireSchedule[bot.name] = generateBotFireSchedule();
         }
 
         const schedule = botsSchedule[bot.name];
