@@ -72,6 +72,11 @@ module.exports = {
     }
 
     setInterval(() => {
+
+      if (!JAILS.modelInstances['TANKS0']) {
+        JAILS.models['TANKS'].create();
+      }
+
       const controllers = JAILS.modelInstances['TANKS0'].properties.controllers;
       const players = Object.keys(controllers);
       const playerTanks = JAILS.modelInstances['TANKS0'].properties.players;
