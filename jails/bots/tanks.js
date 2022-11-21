@@ -74,7 +74,13 @@ module.exports = {
     setInterval(() => {
 
       if (!JAILS.modelInstances['TANKS0']) {
-        JAILS.models['TANKS'].create();
+
+        JAILS.models['TANKS'].methods.create();
+        jails.methods.updateModel({
+          server: jails.server,
+          conn: 'bot',
+          data: {'model':'TANKS0','method':'reset'}
+        });
       }
 
       const controllers = JAILS.modelInstances['TANKS0'].properties.controllers;
