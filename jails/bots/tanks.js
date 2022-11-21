@@ -10,6 +10,10 @@ module.exports = {
     const botsSchedule = {};
     const botsFireSchedule = {};
 
+    if (!JAILS.modelInstances['TANKS0']) {
+      JAILS.models['TANKS'].create();
+    }
+
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
