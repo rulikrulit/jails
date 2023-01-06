@@ -19,7 +19,7 @@
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
-    "react-scripts": "1.0.17",
+    "react-scripts": "5.0.1",
     "cookie-parser": "^1.4.3",
     "nodejs-websocket": "^1.7.0"
   },
